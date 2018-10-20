@@ -74,6 +74,9 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.7',
             'Topic :: Software Development :: Libraries :: Python Modules'],
         packages=['jetburn'],
+        entry_points={
+            'console_scripts': ['jetburn=jetburn.flight_control:jetburn_cli'],
+        },
         include_package_data=True,
         install_requires=['pip>=18.0',
                           'pyrainbowterm>=1.0',
