@@ -85,6 +85,7 @@ if __name__ == "__main__":
                           'wheel>=0.31.1',
                           'pyfiglet>=0.7.6',
                           'inquirer>=2.5.1',
+                          'tabulate>=0.8.2',
                           'requests>=2.20.0',
                           'sphinx>=1.7.1',
                           'recommonmark >=0.4.0',
