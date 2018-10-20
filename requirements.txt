@@ -3,10 +3,13 @@
 
 
 pip >= 18.0
+pyfiglet >=0.7.6
 setuptools >= 40.1.0
 six >= 1.10.0
 wheel >= 0.31.1
-
+requests >= 2.20.0
+pyrainbowterm >= 1.0
+inquirer >= 2.5.1
 
 # Testing requirements
 nose >= 1.3.7
