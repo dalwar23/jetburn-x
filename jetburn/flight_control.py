@@ -87,8 +87,8 @@ def mission_control(execution_mode=None, currency_code=None):
     # Parse the response
 
 
-# Main boiler plate to run this program
-if __name__ == '__main__':
+# CLI entrypoint of jetburn
+def jetburn_cli():
     """
     This function is the boiler plate to run this program and also parses argument and follow
     through to mission control
