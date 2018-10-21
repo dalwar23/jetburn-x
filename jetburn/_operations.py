@@ -200,15 +200,15 @@ def __get_currency_names():
                 pass
         currency_table_row = [country, currency_with_code]
         currency_table_rows.append(currency_table_row)
-    print(tabulate(currency_table_rows, headers=currency_table_header, tablefmt='grid'), color='orange')
+    print(tabulate(currency_table_rows, headers=currency_table_header, tablefmt='grid'), color='green')
 
 
 # List all the valid airport codes and full airport names
-def __get_airport_names(search_pattern=None):
+def __get_airport_names_by_city(search_city=None):
     """
     This function searches for IATA codes
 
-    :param search_pattern: (str) pattern to search for in airport names for IATA code
+    :param search_city: (str) pattern to search for in airport names for IATA code
     :return: (str) three letter IATA code
     """
     # TODO Add country name
@@ -232,7 +232,7 @@ def __get_airport_names(search_pattern=None):
     for airport in airports:
         # result = re.search(search_pattern.lower(), airport['name'].lower())
         if airport['municipality'] is not None:
-            if search_pattern.lower() in airport['municipality'].lower():
+            if search_city.lower() in airport['municipality'].lower():
                 result = True
             else:
                 result = False
@@ -253,4 +253,4 @@ def __get_airport_names(search_pattern=None):
         else:
             airport_table_row = [airport['name'], airport['municipality'], airport['iata_code']]
             airport_table_rows.append(airport_table_row)
-    print(tabulate(airport_table_rows, headers=airport_table_headers, tablefmt='grid'), color='orange')
+    print(tabulate(airport_table_rows, headers=airport_table_headers, tablefmt='grid'), color='green')
