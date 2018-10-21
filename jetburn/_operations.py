@@ -10,6 +10,10 @@ from pyrainbowterm import *
 import inquirer
 from pyfiglet import Figlet
 import re
+import json
+from tabulate import tabulate
+from datapackage import Package
+import requests
 
 # Import local python libraries
 import _release_info as release_info
@@ -21,6 +25,24 @@ __email__ = 'dalwar.hossain@protonmail.com'
 
 reload(sys)
 sys.setdefaultencoding('utf8')
+
+
+# Valid currencies
+# List valid Currencies
+valid_currencies = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT',
+                    'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYR', 'BZD',
+                    'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'COP', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF',
+                    'DKK', 'DOP', 'DZD', 'EEK', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP',
+                    'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS',
+                    'IMP', 'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF',
+                    'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD',
+                    'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MTL', 'MUR', 'MVR', 'MWK', 'MXN',
+                    'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP',
+                    'PKR', 'PLN', 'PYG', 'QAR', 'QUN', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG',
+                    'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'STD', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT',
+                    'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VEF', 'VND',
+                    'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XDR', 'XOF', 'XPD', 'XPF', 'XPT', 'YER', 'ZAR',
+                    'ZMK', 'ZMW', 'ZWL']
 
 
 # Create initial message
@@ -138,23 +160,99 @@ def __is_valid_currency(currency=None):
     :param currency: (str) Three letter upper case currency code
     :return: (boolean) True or false
     """
-    # List valid Currencies
-    valid_currencies = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT',
-                        'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYR', 'BZD',
-                        'CAD', 'CDF', 'CHF', 'CLF', 'CLP', 'CNY', 'COP', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF',
-                        'DKK', 'DOP', 'DZD', 'EEK', 'EGP', 'ERN', 'ETB', 'EUR', 'FJD', 'FKP', 'GBP', 'GEL', 'GGP',
-                        'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS',
-                        'IMP', 'INR', 'IQD', 'IRR', 'ISK', 'JEP', 'JMD', 'JOD', 'JPY', 'KES', 'KGS', 'KHR', 'KMF',
-                        'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LTL', 'LVL', 'LYD',
-                        'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MTL', 'MUR', 'MVR', 'MWK', 'MXN',
-                        'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP',
-                        'PKR', 'PLN', 'PYG', 'QAR', 'QUN', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG',
-                        'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'STD', 'SVC', 'SYP', 'SZL', 'THB', 'TJS', 'TMT',
-                        'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'USD', 'UYU', 'UZS', 'VEF', 'VND',
-                        'VUV', 'WST', 'XAF', 'XAG', 'XAU', 'XCD', 'XDR', 'XOF', 'XPD', 'XPF', 'XPT', 'YER', 'ZAR',
-                        'ZMK', 'ZMW', 'ZWL']
     # Check if given currency is valid or not
     if currency in valid_currencies:
         return True
     else:
         return False
+
+
+# List the names of valid currencies according to their internation currency code
+def __get_currency_names():
+    """
+    This function generates human readable names for the valid currency codes
+
+    :return: <>
+    """
+    # Create a package for currency data
+    print('Collecting currency information from internet.....', log_type='info')
+    package = Package('https://datahub.io/core/currency-codes/datapackage.json')
+    for resource in package.resources:
+        if resource.descriptor['datahub']['type'] == 'derived/json':
+            url = resource.descriptor['path']
+            print('Requesting ISO 4217 currency codes.....', log_type='info')
+            response = requests.get(url)
+            if response.status_code == 200:
+                print('ISO 4217 currency codes received.', log_type='info')
+                currencies = response.json()
+            else:
+                print('Currency codes can not be obtained over internet.', log_type='error', color='red')
+                sys.exit(1)
+    # Currency table
+    currency_table_header = ['Country', 'Currency']
+    currency_table_rows = []
+    print('Creating valid currency table.....', log_type='info')
+    for currency_code in valid_currencies:
+        for entry in currencies:
+            if entry['AlphabeticCode'] == currency_code:
+                country = entry['Entity']
+                currency = entry['Currency']
+                currency_with_code = currency_code + " (" + currency + ")"
+            else:
+                pass
+        currency_table_row = [country, currency_with_code]
+        currency_table_rows.append(currency_table_row)
+    print(tabulate(currency_table_rows, headers=currency_table_header, tablefmt='grid'), color='orange')
+
+
+# List all the valid airport codes and full airport names
+def __get_airport_names(search_pattern=None):
+    """
+    This function searches for IATA codes
+
+    :param search_pattern: (str) pattern to search for in airport names for IATA code
+    :return: (str) three letter IATA code
+    """
+    # TODO Add country name
+    # Create a package for currency data
+    print('Collecting airport information from internet.....', log_type='info')
+    package = Package('https://datahub.io/core/airport-codes/datapackage.json')
+    for resource in package.resources:
+        if resource.descriptor['datahub']['type'] == 'derived/json':
+            url = resource.descriptor['path']
+            print('Requesting IATA airport codes.....', log_type='info')
+            response = requests.get(url)
+            if response.status_code == 200:
+                print('IATA airport codes received.', log_type='info')
+                airports = response.json()
+            else:
+                print('Airport codes can not be obtained over internet.', log_type='error', color='red')
+                sys.exit(1)
+
+    # Find location
+    found_airports = []
+    for airport in airports:
+        # result = re.search(search_pattern.lower(), airport['name'].lower())
+        if airport['municipality'] is not None:
+            if search_pattern.lower() in airport['municipality'].lower():
+                result = True
+            else:
+                result = False
+        elif airport['municipality'] is None or airport['municipality'] == 'null':
+            result = False
+        else:
+            pass
+
+        if result:
+            found_airports.append(airport)
+
+    # Sort out only the airports
+    airport_table_headers = ['Airport Name', 'City', 'IATA Code']
+    airport_table_rows = []
+    for airport in found_airports:
+        if airport['iata_code'] == 'null' or airport['iata_code'] == 'None' or airport['iata_code'] is None:
+            pass
+        else:
+            airport_table_row = [airport['name'], airport['municipality'], airport['iata_code']]
+            airport_table_rows.append(airport_table_row)
+    print(tabulate(airport_table_rows, headers=airport_table_headers, tablefmt='grid'), color='orange')
