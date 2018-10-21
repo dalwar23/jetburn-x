@@ -8,7 +8,7 @@ Airline ticket explorer program
 
 .. image:: https://badge.fury.io/py/jetburn.svg
     :alt: Pypi Version
-    :target: https://badge.fury.io/py/jetburn
+    :target: https://pypi.org/project/jetburn/
 
 .. image:: https://travis-ci.org/dharif23/jetburn.svg?branch=master
     :alt: Build Status
