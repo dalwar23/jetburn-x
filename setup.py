@@ -86,6 +86,7 @@ if __name__ == "__main__":
                           'pyfiglet>=0.7.6',
                           'inquirer>=2.5.1',
                           'tabulate>=0.8.2',
+                          'datapackage>=1.5.1',
                           'requests>=2.20.0',
                           'sphinx>=1.7.1',
                           'recommonmark >=0.4.0',
