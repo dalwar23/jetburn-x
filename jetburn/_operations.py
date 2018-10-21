@@ -10,7 +10,6 @@ from pyrainbowterm import *
 import inquirer
 from pyfiglet import Figlet
 import re
-import json
 from tabulate import tabulate
 from datapackage import Package
 import requests
@@ -27,7 +26,6 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 
-# Valid currencies
 # List valid Currencies
 valid_currencies = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT',
                     'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BTC', 'BTN', 'BWP', 'BYR', 'BZD',
@@ -94,31 +92,31 @@ def __get_trip_info(round_trip=None):
                   '(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)'
     if round_trip:
         questions = [
-            inquirer.Text(name='origin', message='Please provide origin airport \U0001f6eb ',
+            inquirer.Text(name='origin', message='Origin airport \U0001f6eb ',
                           validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='destination', message='Please provide destination airport \U0001f6ec ',
+            inquirer.Text(name='destination', message='Destination airport \U0001f6ec ',
                           validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='fly_out_date', message='Please provide fly out date (dd/mm/yyyy) \U0001f4c5 ',
+            inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) \U0001f4c5 ',
                           validate=lambda _, x: re.match(date_reg_ex, x)),
-            inquirer.Text(name='fly_back_date', message='Please provide fly back date (dd/mm/yyyy) \U0001f4c5 ',
+            inquirer.Text(name='fly_back_date', message='Fly back date (dd/mm/yyyy) \U0001f4c5 ',
                           validate=lambda _, x: re.match(date_reg_ex, x)),
-            inquirer.Text(name='adults', message='Number of adults (>16 Years)? \U0001f468 ', default='1'),
-            inquirer.Text(name='teens', message='Number of teens (12-15 Years)? \U0001f466 ', default='0'),
-            inquirer.Text(name='children', message='Number of children (2-11 Years)? \U0001f9d2 ', default='0'),
-            inquirer.Text(name='infants', message='Number of infants (<2 Years)? \U0001f476 ', default='0'),
+            inquirer.Text(name='adults', message='Adults (>16 Years)? \U0001f468 ', default='1'),
+            inquirer.Text(name='teens', message='Teens (12-15 Years)? \U0001f466 ', default='0'),
+            inquirer.Text(name='children', message='Children (2-11 Years)? \U0001f9d2 ', default='0'),
+            inquirer.Text(name='infants', message='Infants (<2 Years)? \U0001f476 ', default='0'),
         ]
     else:
         questions = [
-            inquirer.Text(name='origin', message='Please provide origin airport \U0001f6eb ',
+            inquirer.Text(name='origin', message='Origin airport \U0001f6eb ',
                           validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='destination', message='Please provide destination airport \U0001f6ec ',
+            inquirer.Text(name='destination', message='Destination airport \U0001f6ec ',
                           validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='fly_out_date', message='Please provide fly out date (dd/mm/yyyy) \U0001f4c5 ',
+            inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) \U0001f4c5 ',
                           validate=lambda _, x: re.match(date_reg_ex, x)),
-            inquirer.Text(name='adults', message='Number of adults (>16 Years)? \U0001f468 ', default='1'),
-            inquirer.Text(name='teens', message='Number of teens (12-15 Years)? \U0001f466 ', default='0'),
-            inquirer.Text(name='children', message='Number of children (2-11 Years)? \U0001f9d2 ', default='0'),
-            inquirer.Text(name='infants', message='Number of infants (<2 Years)? \U0001f476 ', default='0'),
+            inquirer.Text(name='adults', message='Adults (>16 Years)? \U0001f468 ', default='1'),
+            inquirer.Text(name='teens', message='Teens (12-15 Years)? \U0001f466 ', default='0'),
+            inquirer.Text(name='children', message='Children (2-11 Years)? \U0001f9d2 ', default='0'),
+            inquirer.Text(name='infants', message='Infants (<2 Years)? \U0001f476 ', default='0'),
         ]
     # Prompt the questions
     answers = inquirer.prompt(questions)
