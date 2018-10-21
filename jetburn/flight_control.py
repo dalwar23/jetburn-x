@@ -12,6 +12,7 @@ import argparse
 
 # Import local python library
 import _operations as operations
+import _flight_parser as parser
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
@@ -19,12 +20,13 @@ __email__ = 'dalwar.hossain@protonmail.com'
 
 
 # Create mission control
-def mission_control(execution_mode=None, currency_code=None):
+def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
     """
     This function controls the program
 
-    :param execution_mode: (str) Execution mode for the program
+    :param exec_mode: (str) Execution mode for the program
     :param currency_code: (str) Currency of ticket price
+    :param number_of_results: (int) Number of results to show per search
     :return: (list) List of responses from python requests
     """
     # Print initial message
@@ -61,6 +63,7 @@ def mission_control(execution_mode=None, currency_code=None):
         'children': trip_info['children'],
         'infants': trip_info['infants'],
         'curr': currency,
+        'limit': number_of_results,
         'partner': 'picky'
     }
 
@@ -76,7 +79,6 @@ def mission_control(execution_mode=None, currency_code=None):
         print('Cleared for takeoff', log_type='info')
         try:
             json_data = response.json()
-            print(json.dumps(json_data['data'][0], indent=4))
         except ValueError as err:
             print('Flight aborted due to JSON failure! ERROR: {}'.format(err))
             sys.exit(1)
@@ -85,9 +87,11 @@ def mission_control(execution_mode=None, currency_code=None):
         sys.exit(1)
 
     # Parse the response
+    for data in json_data['data']:
+        parser.__itinerary_parser(flight_search_data=data, execution_mode=exec_mode)
 
 
-# CLI entrypoint of jetburn
+# CLI entry point of jetburn
 def jetburn_cli():
     """
     This function is the boiler plate to run this program and also parses argument and follow
@@ -99,9 +103,11 @@ def jetburn_cli():
     parser.add_argument('-m', '--mode', action='store', dest='mode', required=False,
                         help='Execution mode of the program. Compact[c/compact](default) and Extended [e/extended]')
     parser.add_argument('-c', '--currency', action='store', dest='currency_code', required=False,
-                        help='Three letter currency code.[EUR, USD, AUD, CAD, RON, PLN] etc.')
-    parser.add_argument('-s', '--show', action='store', dest='display', required=False,
-                        help='Displays information. Usage: jetburn --show currency')
+                        help='Three letter currency code.[EUR], USD, AUD, CAD, RON, PLN etc.')
+    parser.add_argument('-r', '--result', action='store', dest='results', required=False,
+                        help='Number of results to show per search. Default is [5]')
+    parser.add_argument('-i', '--info', action='store', dest='info', required=False,
+                        help='Displays information. Usage: jetburn --info currency')
     parser.add_argument('-f', '--find', action='store', dest='pattern', required=False,
                         help='Finds airport names and IATA code. Usage: jetburn --find <city_name>')
     # Parse arguments
@@ -119,14 +125,20 @@ def jetburn_cli():
     else:
         _currency_code = args.currency_code.upper()
 
-    # Check if the currency display is provided or not
-    if args.display is None:
+    # Check result display parameter
+    if args.results is None:
+        _results = 5
+    else:
+        _results = int(args.results)
+
+    # Check if the currency information argument
+    if args.info is None:
         pass
-    elif args.display == 'currency':
+    elif args.info == 'currency':
         operations.__initial_message()
         operations.__get_currency_names()
     else:
-        print('Invalid input: {}'.format(args.display), log_type='error', color='red')
+        print('Invalid input: {}'.format(args.info), log_type='error', color='red')
         sys.exit(1)
 
     # Check if the search patter is given or not
@@ -138,6 +150,6 @@ def jetburn_cli():
         operations.__get_airport_names(search_pattern=pattern)
 
     # Passover the control to mission control if no info check arguments are provided
-    if args.display is None and args.pattern is None:
+    if args.info is None and args.pattern is None:
         # Pass the control to mission control
-        mission_control(execution_mode=exec_mode, currency_code=_currency_code)
+        mission_control(exec_mode=exec_mode, currency_code=_currency_code, number_of_results=_results)
