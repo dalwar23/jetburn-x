@@ -100,6 +100,10 @@ def jetburn_cli():
                         help='Execution mode of the program. Compact[c/compact](default) and Extended [e/extended]')
     parser.add_argument('-c', '--currency', action='store', dest='currency_code', required=False,
                         help='Three letter currency code.[EUR, USD, AUD, CAD, RON, PLN] etc.')
+    parser.add_argument('-s', '--show', action='store', dest='display', required=False,
+                        help='Displays information. Usage: jetburn --show currency')
+    parser.add_argument('-f', '--find', action='store', dest='pattern', required=False,
+                        help='Finds airport names and IATA code. Usage: jetburn --find <city_name>')
     # Parse arguments
     args = parser.parse_args()
 
@@ -115,5 +119,25 @@ def jetburn_cli():
     else:
         _currency_code = args.currency_code.upper()
 
-    # Pass the control to mission control
-    mission_control(execution_mode=exec_mode, currency_code=_currency_code)
+    # Check if the currency display is provided or not
+    if args.display is None:
+        pass
+    elif args.display == 'currency':
+        operations.__initial_message()
+        operations.__get_currency_names()
+    else:
+        print('Invalid input: {}'.format(args.display), log_type='error', color='red')
+        sys.exit(1)
+
+    # Check if the search patter is given or not
+    if args.pattern is None:
+        pass
+    else:
+        operations.__initial_message()
+        pattern = args.pattern
+        operations.__get_airport_names(search_pattern=pattern)
+
+    # Passover the control to mission control if no info check arguments are provided
+    if args.display is None and args.pattern is None:
+        # Pass the control to mission control
+        mission_control(execution_mode=exec_mode, currency_code=_currency_code)
