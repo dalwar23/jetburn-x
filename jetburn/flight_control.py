@@ -108,8 +108,8 @@ def jetburn_cli():
                         help='Number of results to show per search. Default is [5]')
     parser.add_argument('-i', '--info', action='store', dest='info', required=False,
                         help='Displays information. Usage: jetburn --info currency')
-    parser.add_argument('-f', '--find', action='store', dest='pattern', required=False,
-                        help='Finds airport names and IATA code. Usage: jetburn --find <city_name>')
+    parser.add_argument('--find-airport', action='store', dest='city_name', required=False,
+                        help='Finds airport names and IATA code by city name. Usage: jetburn --find-airport <city_name>')
     # Parse arguments
     args = parser.parse_args()
 
@@ -142,14 +142,14 @@ def jetburn_cli():
         sys.exit(1)
 
     # Check if the search patter is given or not
-    if args.pattern is None:
+    if args.city_name is None:
         pass
     else:
         operations.__initial_message()
-        pattern = args.pattern
-        operations.__get_airport_names(search_pattern=pattern)
+        pattern = args.city_name
+        operations.__get_airport_names_by_city(search_city=pattern)
 
     # Passover the control to mission control if no info check arguments are provided
-    if args.info is None and args.pattern is None:
+    if args.info is None and args.city_name is None:
         # Pass the control to mission control
         mission_control(exec_mode=exec_mode, currency_code=_currency_code, number_of_results=_results)
