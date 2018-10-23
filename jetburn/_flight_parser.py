@@ -30,7 +30,7 @@ def __get_airline_info():
         else:
             response.raise_for_status()
     except requests.ConnectionError as err:
-        print('Airline information service is offline!', log_type='error', color='red')
+        print('Airline information service is offline! ERROR: {}'.format(err), log_type='error', color='red')
 
     # Return
     return airlines
@@ -115,7 +115,7 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
             pass
         else:
             layover_time = __calculate_layover_time(arrival_time=data['route'][index - 1]['aTime'],
-                                                  departure_time=data['route'][index]['dTime'])
+                                                    departure_time=data['route'][index]['dTime'])
             flight_leg['layover'] = layover_time
         flight_time = __calculate_flight_time(departure_time=item['dTimeUTC'], arrival_time=item['aTimeUTC'])
         flight_leg['flight_duration'] = flight_time
