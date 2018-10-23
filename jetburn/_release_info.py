@@ -7,6 +7,6 @@ __email__ = 'dalwar.hossain@protonmail.com'
 
 
 # Version
-__version__ = '1.0'
-__release__ = '1.0'
+__version__ = '1'
+__release__ = '2'
 __package__ = 'jetburn'
