@@ -54,30 +54,61 @@ def __initial_message():
     fig_let = Figlet(font='banner3')
 
     date_time = datetime.datetime.now()
-    _print_string = "Airline tickets explorer program"
+    _print_string = "Airline ticket explorer program"
     _print_string += " [" + date_time.strftime("%d-%B-%Y %H:%M:%S") + "]"
     # Author message display
     _author_string = "Author: {} ({})".format(release_info.__author__, release_info.__email__)
     # Help message
     _help_string = "Need help? jetburn -h/--help"
+    # Warning message
+    _warn_line0 = '..::DISCLAIMER::..'
+    _warn_line1 = 'This program is not an airline ticket booking system and has'
+    _warn_line2 = 'no partnership with any airlines or ticketing agents'
     # Create prefix and suffix
     prefix = marker * 2 + ' '
     suffix = ' ' + marker * 2
     print_string = prefix + _print_string
-    version_message = prefix + release_info.__package__ + " v" + release_info.__version__
+    version_release = " v" + release_info.__version__ + "." + release_info.__release__
+    license = release_info.__license__
+    version_message = prefix + release_info.__package__ + ": " + version_release + " / " + "License: " + license
     author_string = prefix + _author_string
     help_string = prefix + _help_string
+    warn_line1 = prefix + _warn_line1
+    warn_line2 = prefix + _warn_line2
     # Take max
-    str_length = max([len(print_string), len(version_message), len(author_string), len(help_string)]) + 3
+    str_length = max([len(print_string), len(version_message), len(author_string), len(help_string),
+                      len(warn_line1), len(warn_line2)]) + 3
+    blank_space = str_length -(len(prefix) + len(suffix))
+    warn_space = blank_space - len(_warn_line0)
+    if warn_space % 2 == 0:
+        warn_space_before = warn_space/2
+        warn_space_after = warn_space/2
+    else:
+        warn_space_before = warn_space/2
+        warn_space_after = warn_space/2 + 1
     # Create padding
     print_string = print_string + " " * (str_length - len(print_string) - len(suffix)) + suffix
     version_message = version_message + " " * (str_length - len(version_message) - len(suffix)) + suffix
     author_string = author_string + " " * (str_length - len(author_string) - len(suffix)) + suffix
     help_string = help_string + " " * (str_length - len(help_string) - len(suffix)) + suffix
+    warn_line1_padding = " " * (str_length - len(warn_line1) - len(suffix))
+    warn_line2_padding = " " * (str_length - len(warn_line2) - len(suffix))
+
     # Print
     line_block = marker * str_length
     print(fig_let.renderText(text_to_render), color='green')
     print(line_block, print_string, version_message, author_string, help_string, line_block, sep='\n')
+    print (prefix, end='')
+    print(' ' * warn_space_before, end='')
+    print(_warn_line0, color='orange', end='')
+    print(' ' * warn_space_after, end='')
+    print(suffix)
+    print(prefix, end='')
+    print(_warn_line1 + warn_line1_padding, color='orange', end='')
+    print(suffix)
+    print(prefix, end='')
+    print(_warn_line2 + warn_line2_padding, color='orange', end='')
+    print(suffix, line_block, sep='\n')
 
 
 # Create a list of questions
