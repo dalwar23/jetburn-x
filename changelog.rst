@@ -1,5 +1,10 @@
 Change Log
 ==========
+version v1.3
+------------
+1. Added warning / disclaimer note
+2. Added license information on screen
+
 version v1.2
 ------------
 1. New version syntax introduced [version.release]
