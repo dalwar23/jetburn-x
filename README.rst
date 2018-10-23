@@ -75,14 +75,7 @@ This will show 12 results for that particular flight search.
 
 Change Log
 ----------
-version v1.0
-^^^^^^^^^^^^
-1. One way flight ticket fare explorer
-2. Find airport by city name
-3. Find valid currencies list
-4. User defined currency and conversion between EURO
-5. User defined display list (number of search results shown on screen)
-6. Single mode execution
+Please refer to ``changelog.rst``
 
 Bug Report
 ----------
