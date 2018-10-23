@@ -8,5 +8,6 @@ __email__ = 'dalwar.hossain@protonmail.com'
 
 # Version
 __version__ = '1'
-__release__ = '2'
+__release__ = '3'
 __package__ = 'jetburn'
+__license__ = 'LGPL-3.0'
