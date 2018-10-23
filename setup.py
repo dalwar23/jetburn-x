@@ -20,7 +20,6 @@ from setuptools import setup
 # Check if enough parameter has been given to install or not
 if sys.argv[-1] == 'setup.py':
     print("To install, run 'python setup.py install'")
-    print()
 
 
 # Check python version before installing
@@ -52,10 +51,10 @@ if __name__ == "__main__":
         maintainer_email='dalwar.hossain@protonmail.com',
         author=release_info['__author__'],
         author_email=release_info['__email__'],
-        description='jetburn - Airline tickets explorer program',
+        description='jetburn - Airline ticket explorer program',
         keywords=['jetburn', 'airlines', 'tickets', 'fares'],
         long_description=readme(),
-        license='LGPL-3.0',
+        license=release_info['__license__'],
         platforms=['Linux', 'Mac OSX', 'Windows', 'Unix'],
         url='https://github.com/dharif23/jetburn',
         download_url='https://github.com/dharif23/jetburn',
