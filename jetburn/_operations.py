@@ -16,6 +16,7 @@ import platform
 
 # Import local python libraries
 import _release_info as release_info
+import _questions as questions
 import _icons as icon
 
 # Source code meta data
@@ -137,41 +138,13 @@ def __get_trip_info(round_trip=None):
         except ImportError as e:
             print('Python module import error. ERROR: {}', format(e), log_type='error', color='red')
             sys.exit(1)
-        # Generate questions for flight search information
-        date_reg_ex = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/]' \
-                      '(0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|' \
-                      '(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|' \
-                      '72|76|80|84|88|92|96)$)'
+        # Questions for flight search
         if round_trip:
-            questions = [
-                inquirer.Text(name='origin', message='Origin airport ' + icon.departure,
-                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-                inquirer.Text(name='destination', message='Destination airport ' + icon.arrival,
-                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-                inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) ' + icon.calendar,
-                              validate=lambda _, x: re.match(date_reg_ex, x)),
-                inquirer.Text(name='fly_back_date', message='Fly back date (dd/mm/yyyy) ' + icon.calendar,
-                              validate=lambda _, x: re.match(date_reg_ex, x)),
-                inquirer.Text(name='adults', message='Adults (>16 Years)? ' + icon.adult, default='1'),
-                inquirer.Text(name='teens', message='Teens (12-15 Years)? ' + icon.teen, default='0'),
-                inquirer.Text(name='children', message='Children (2-11 Years)? ' + icon.child, default='0'),
-                inquirer.Text(name='infants', message='Infants (<2 Years)? ' + icon.infant, default='0'),
-            ]
+            flight_search_questions = questions.linux_round_trip_questions
         else:
-            questions = [
-                inquirer.Text(name='origin', message='Origin airport ' + icon.departure,
-                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-                inquirer.Text(name='destination', message='Destination airport ' + icon.arrival,
-                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-                inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) ' + icon.calendar,
-                              validate=lambda _, x: re.match(date_reg_ex, x)),
-                inquirer.Text(name='adults', message='Adults (>16 Years)? ' + icon.adult, default='1'),
-                inquirer.Text(name='teens', message='Teens (12-15 Years)? ' + icon.teen, default='0'),
-                inquirer.Text(name='children', message='Children (2-11 Years)? ' + icon.child, default='0'),
-                inquirer.Text(name='infants', message='Infants (<2 Years)? ' + icon.infant, default='0'),
-            ]
+            flight_search_questions = questions.linux_one_way_questions
         # Prompt the questions
-        answers = inquirer.prompt(questions)
+        answers = inquirer.prompt(flight_search_questions)
         if round_trip:
             answers = answers
         else:
@@ -195,6 +168,22 @@ def __trip_status():
         except ImportError as e:
             print('Python module import error! ERROR: {}'.format(e), log_type='error', color='red')
             sys.exit(1)
+
+        # Create trip type [one way, round trip] question
+        question = [
+            {
+                'type': 'confirm',
+                'message': 'Round Trip? ([Y]/n)',
+                'name': 'trip_status',
+                'default': True
+            }
+        ]
+        answer = PyInquirer.prompt(question)
+        print(answer)
+        if answer['trip_status'] == 'Y' or answer['trip_status'] == 'y':
+            return True
+        else:
+            return False
     else:
         try:
             import inquirer
@@ -202,7 +191,7 @@ def __trip_status():
             print('Python module import error. ERROR: {}', format(e), log_type='error', color='red')
             sys.exit(1)
 
-        # Create trip question
+        # Create trip type [one way, round trip] question
         question = [
             inquirer.Text(name='trip_status', message='Round Trip? ([Y]/n) ' + icon.cycle, default='Y',
                           validate=lambda _, x: re.match('^[a-zA-Z]$', x))
