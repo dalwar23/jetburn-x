@@ -13,6 +13,7 @@ import re
 from tabulate import tabulate
 from datapackage import Package
 import requests
+import platform
 
 # Import local python libraries
 import _release_info as release_info
@@ -47,8 +48,13 @@ valid_currencies = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG
 def __initial_message():
     """
     This function creates initial message and prints it
+
     """
-    marker = '\U0001f6ea'  # Must be single character
+    # Assign marker
+    if platform.system() == 'Windows':
+        marker = "="
+    else:
+        marker = '\U0001f6ea'  # Must be single character
     # Print a general help message
     text_to_render = 'jetburn'
     fig_let = Figlet(font='banner3')
