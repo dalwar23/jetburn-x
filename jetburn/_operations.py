@@ -7,7 +7,6 @@ from __future__ import print_function, unicode_literals
 import sys
 import datetime
 from pyrainbowterm import *
-import inquirer
 from pyfiglet import Figlet
 import re
 from tabulate import tabulate
@@ -17,6 +16,7 @@ import platform
 
 # Import local python libraries
 import _release_info as release_info
+import _icons as icon
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
@@ -54,7 +54,7 @@ def __initial_message():
     if platform.system() == 'Windows':
         marker = "="
     else:
-        marker = '\U0001f6ea'  # Must be single character
+        marker = icon.airplane  # Must be single character
     # Print a general help message
     text_to_render = 'jetburn'
     fig_let = Figlet(font='banner3')
@@ -124,46 +124,61 @@ def __get_trip_info(round_trip=None):
 
     :return: (dict) A python dict
     """
-    date_reg_ex = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/]' \
-                  '(0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])' \
-                  '(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)'
-    if round_trip:
-        questions = [
-            inquirer.Text(name='origin', message='Origin airport \U0001f6eb ',
-                          validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='destination', message='Destination airport \U0001f6ec ',
-                          validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) \U0001f4c5 ',
-                          validate=lambda _, x: re.match(date_reg_ex, x)),
-            inquirer.Text(name='fly_back_date', message='Fly back date (dd/mm/yyyy) \U0001f4c5 ',
-                          validate=lambda _, x: re.match(date_reg_ex, x)),
-            inquirer.Text(name='adults', message='Adults (>16 Years)? \U0001f468 ', default='1'),
-            inquirer.Text(name='teens', message='Teens (12-15 Years)? \U0001f466 ', default='0'),
-            inquirer.Text(name='children', message='Children (2-11 Years)? \U0001f9d2 ', default='0'),
-            inquirer.Text(name='infants', message='Infants (<2 Years)? \U0001f476 ', default='0'),
-        ]
+    # Import required libraries
+    if platform.system() == 'Windows':
+        try:
+            import PyInquirer
+        except ImportError as e:
+            print('Python module import error! ERROR: {}'.format(e), log_type='error', color='red')
+            sys.exit(1)
     else:
-        questions = [
-            inquirer.Text(name='origin', message='Origin airport \U0001f6eb ',
-                          validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='destination', message='Destination airport \U0001f6ec ',
-                          validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
-            inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) \U0001f4c5 ',
-                          validate=lambda _, x: re.match(date_reg_ex, x)),
-            inquirer.Text(name='adults', message='Adults (>16 Years)? \U0001f468 ', default='1'),
-            inquirer.Text(name='teens', message='Teens (12-15 Years)? \U0001f466 ', default='0'),
-            inquirer.Text(name='children', message='Children (2-11 Years)? \U0001f9d2 ', default='0'),
-            inquirer.Text(name='infants', message='Infants (<2 Years)? \U0001f476 ', default='0'),
-        ]
-    # Prompt the questions
-    answers = inquirer.prompt(questions)
-    if round_trip:
-        answers = answers
-    else:
-        answers['fly_back_date'] = ''
+        try:
+            import inquirer
+        except ImportError as e:
+            print('Python module import error. ERROR: {}', format(e), log_type='error', color='red')
+            sys.exit(1)
+        # Generate questions for flight search information
+        date_reg_ex = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/]' \
+                      '(0[13578]|1[02]))|((29|30)[\/](0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|' \
+                      '(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|32|36|40|44|48|52|56|60|64|68|' \
+                      '72|76|80|84|88|92|96)$)'
+        if round_trip:
+            questions = [
+                inquirer.Text(name='origin', message='Origin airport ' + icon.departure,
+                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
+                inquirer.Text(name='destination', message='Destination airport ' + icon.arrival,
+                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
+                inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) ' + icon.calendar,
+                              validate=lambda _, x: re.match(date_reg_ex, x)),
+                inquirer.Text(name='fly_back_date', message='Fly back date (dd/mm/yyyy) ' + icon.calendar,
+                              validate=lambda _, x: re.match(date_reg_ex, x)),
+                inquirer.Text(name='adults', message='Adults (>16 Years)? ' + icon.adult, default='1'),
+                inquirer.Text(name='teens', message='Teens (12-15 Years)? ' + icon.teen, default='0'),
+                inquirer.Text(name='children', message='Children (2-11 Years)? ' + icon.child, default='0'),
+                inquirer.Text(name='infants', message='Infants (<2 Years)? ' + icon.infant, default='0'),
+            ]
+        else:
+            questions = [
+                inquirer.Text(name='origin', message='Origin airport ' + icon.departure,
+                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
+                inquirer.Text(name='destination', message='Destination airport ' + icon.arrival,
+                              validate=lambda _, x: re.match('^[a-zA-Z]{3}$', x)),
+                inquirer.Text(name='fly_out_date', message='Fly out date (dd/mm/yyyy) ' + icon.calendar,
+                              validate=lambda _, x: re.match(date_reg_ex, x)),
+                inquirer.Text(name='adults', message='Adults (>16 Years)? ' + icon.adult, default='1'),
+                inquirer.Text(name='teens', message='Teens (12-15 Years)? ' + icon.teen, default='0'),
+                inquirer.Text(name='children', message='Children (2-11 Years)? ' + icon.child, default='0'),
+                inquirer.Text(name='infants', message='Infants (<2 Years)? ' + icon.infant, default='0'),
+            ]
+        # Prompt the questions
+        answers = inquirer.prompt(questions)
+        if round_trip:
+            answers = answers
+        else:
+            answers['fly_back_date'] = ''
 
-    # Return
-    return answers
+        # Return
+        return answers
 
 
 # Create trip status question
@@ -173,18 +188,32 @@ def __trip_status():
 
     :return: (dict) Python dictionary
     """
-    # Create trip question
-    question = [
-        inquirer.Text(name='trip_status', message='Round Trip? ([Y]/n) \U0001f5d8 ', default='Y',
-                      validate=lambda _, x: re.match('^[a-zA-Z]$', x))
-    ]
-
-    answer = inquirer.prompt(question)
-
-    if answer['trip_status'] == 'Y' or answer['trip_status'] == 'y':
-        return True
+    # Import required python library
+    if platform.system() == 'Windows':
+        try:
+            import PyInquirer
+        except ImportError as e:
+            print('Python module import error! ERROR: {}'.format(e), log_type='error', color='red')
+            sys.exit(1)
     else:
-        return False
+        try:
+            import inquirer
+        except ImportError as e:
+            print('Python module import error. ERROR: {}', format(e), log_type='error', color='red')
+            sys.exit(1)
+
+        # Create trip question
+        question = [
+            inquirer.Text(name='trip_status', message='Round Trip? ([Y]/n) ' + icon.cycle, default='Y',
+                          validate=lambda _, x: re.match('^[a-zA-Z]$', x))
+        ]
+
+        answer = inquirer.prompt(question)
+
+        if answer['trip_status'] == 'Y' or answer['trip_status'] == 'y':
+            return True
+        else:
+            return False
 
 
 # Check if currency is a valid currency or not
