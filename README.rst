@@ -26,6 +26,10 @@ an airline ticket booking system and has **no partnership** with any airlines wh
 
 Installation
 ------------
+Linux/Mac
+^^^^^^^^^
+Considering that ``pip`` is configured:
+
 .. code-block:: python
 
     pip install jetburn
@@ -35,6 +39,30 @@ or
 .. code-block:: python
 
    python setup.py install
+
+Windows
+^^^^^^^
+Windows terminal (cmd) doesn't support all the unicode codecs and To get the best results -
+please use a terminal emulator like, cmder [`Cmder <http://cmder.net/>`_] or
+ConEmu [`ConEmu <https://conemu.github.io/>`_]. Please use *<xterm>* color scheme from `settings`
+menu, for best visual presentation of the program.
+
+Considering ``python`` is installed and ``pip`` is configured.
+If pip is not configured, please configure ``pip`` first.
+
+Open Cmder/ConEmu and Type:
+
+.. code-block:: python
+
+   pip install jetburn
+
+Or
+
+.. code-block:: python
+
+   python setup.py install
+
+This command should install ``jetburn`` with all the required dependencies.
 
 Usage
 -----
