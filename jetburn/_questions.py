@@ -73,12 +73,6 @@ if platform.system() == "Windows":
         },
         {
             'type': 'input',
-            'name': 'fly_back_date',
-            'message': 'Fly back date (dd/mm/yyyy): ',
-            'validate': DateValidator
-        },
-        {
-            'type': 'input',
             'name': 'adults',
             'message': 'Adults (>16 Years)? ',
             'validate': NumberValidator,
@@ -106,6 +100,13 @@ if platform.system() == "Windows":
             'filter': lambda val: int(val)
         }
     ]
+    fly_back_question = {
+            'type': 'input',
+            'name': 'fly_back_date',
+            'message': 'Fly back date (dd/mm/yyyy): ',
+            'validate': DateValidator
+        }
+    windows_round_trip_questions = windows_questions.insert(3, fly_back_question)
 else:
     # LINUX/MAC
     # Generate questions for flight search information
