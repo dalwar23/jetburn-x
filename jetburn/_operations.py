@@ -132,6 +132,20 @@ def __get_trip_info(round_trip=None):
         except ImportError as e:
             print('Python module import error! ERROR: {}'.format(e), log_type='error', color='red')
             sys.exit(1)
+        # Questions for flight search
+        if round_trip:
+            flight_search_questions = questions.windows_questions
+        else:
+            flight_search_questions = questions.windows_questions.remove(3)
+        # Prompt the questions
+        answers = PyInquirer.prompt(flight_search_questions)
+        if round_trip:
+            answers = answers
+        else:
+            answers['fly_back_date'] = ''
+
+        # Return
+        return answers
     else:
         try:
             import inquirer
