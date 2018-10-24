@@ -8,6 +8,7 @@ import sys
 import inquirer
 import re
 import platform
+from PyInquirer import Validator, ValidationError
 
 # Import local python libraries
 import _icons as icon
@@ -21,11 +22,90 @@ __email__ = 'dalwar.hossain@protonmail.com'
 date_reg_ex = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/]' \
               '(0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|' \
               '32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)'
+# Airport IATA code validator
+class IataCodeValidator(Validator):
+    def __init__(self):
+        pass
+    def validate(self, document):
+        pass
+
+# Date validator
+class DateValidator(Validator):
+    def __init__(self):
+        pass
+    def validate(self, document):
+        pass
+
+class NumberValidator(Validator):
+    def __init__(self):
+        pass
+    def validate(self, document):
+        try:
+            int(document.text)
+        except ValueError:
+            raise ValidationError(
+                message='Please enter a number',
+                cursor_position=len(document.text))
+
+
 if platform.system() == "Windows":
     # WINDOWS
     # Generate questions for flight search information
     # ----------------------- Round Trip ---------------------------------------------------------------
-    windows_round_trip_questions = []
+    windows_questions = [
+        {
+            'type': 'input',
+            'name': 'origin',
+            'message': 'Origin airport: ',
+            'validate': IataCodeValidator
+        },
+        {
+            'type': 'input',
+            'name': 'destination',
+            'message': 'Destination airport: ',
+            'validate': IataCodeValidator
+        },
+        {
+            'type': 'input',
+            'name': 'fly_out_date',
+            'message': 'Fly out date (dd/mm/yyyy): ',
+            'validate': DateValidator
+        },
+        {
+            'type': 'input',
+            'name': 'fly_back_date',
+            'message': 'Fly back date (dd/mm/yyyy): ',
+            'validate': DateValidator
+        },
+        {
+            'type': 'input',
+            'name': 'adults',
+            'message': 'Adults (>16 Years)? ',
+            'validate': NumberValidator,
+            'filter': lambda val: int(val)
+        },
+        {
+            'type': 'input',
+            'name': 'teens',
+            'message': 'Teens (12-15 Years)? ',
+            'validate': NumberValidator,
+            'filter': lambda val: int(val)
+        },
+        {
+            'type': 'input',
+            'name': 'children',
+            'message': 'Children (2-11 Years)? ',
+            'validate': NumberValidator,
+            'filter': lambda val: int(val)
+        },
+        {
+            'type': 'input',
+            'name': 'infants',
+            'message': 'Infants (<2 Years)? ',
+            'validate': NumberValidator,
+            'filter': lambda val: int(val)
+        }
+    ]
 else:
     # LINUX/MAC
     # Generate questions for flight search information
