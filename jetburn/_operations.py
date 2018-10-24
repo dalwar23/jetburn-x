@@ -136,7 +136,7 @@ def __get_trip_info(round_trip=None):
         if round_trip:
             flight_search_questions = questions.windows_questions
         else:
-            flight_search_questions = questions.windows_questions.remove(3)
+            flight_search_questions = questions.windows_questions.__delitem__(3)
         # Prompt the questions
         answers = PyInquirer.prompt(flight_search_questions)
         if round_trip:
