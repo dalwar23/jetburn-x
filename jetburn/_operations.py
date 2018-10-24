@@ -173,14 +173,13 @@ def __trip_status():
         question = [
             {
                 'type': 'confirm',
-                'message': 'Round Trip? ([Y]/n)',
+                'message': 'Round Trip? ',
                 'name': 'trip_status',
                 'default': True
             }
         ]
         answer = PyInquirer.prompt(question)
-        print(answer)
-        if answer['trip_status'] == 'Y' or answer['trip_status'] == 'y':
+        if answer['trip_status']:
             return True
         else:
             return False
