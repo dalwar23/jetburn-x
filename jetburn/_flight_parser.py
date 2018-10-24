@@ -119,9 +119,10 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
             flight_leg['layover'] = layover_time
         flight_time = __calculate_flight_time(departure_time=item['dTimeUTC'], arrival_time=item['aTimeUTC'])
         flight_leg['flight_duration'] = flight_time
+        flight_leg['airline_code'] = item['airline']
         flight_leg['flight_number'] = item['airline'] + " " + str(item['flight_no'])
-        airline = (entry['name'] for entry in airlines if entry['id'] == item['airline']).next()
-        flight_leg['airline'] = airline
+        airline_full_name = (entry['name'] for entry in airlines if entry['id'] == item['airline']).next()
+        flight_leg['airline_full_name'] = airline_full_name
         if item['return'] == 0:
             route.append(flight_leg)
         elif item['return'] == 1:
@@ -132,16 +133,18 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
     for index, route_leg in enumerate(route):
         if index == 0:
             outbound_leg = route_leg['origin_airport'] + "---"
+            carriers = route_leg['airline_code'] + "-"
             outbound_leg += route_leg['destination_airport'] + "---"
         else:
             if route[index - 1]['destination_airport'] == route_leg['origin_airport']:
+                carriers += route_leg['airline_code'] + "-"
                 outbound_leg += route_leg['destination_airport'] + "---"
             else:
                 if airport_change:
                     outbound_leg += " [Change Airport] "
                 pass
 
-    outbound_itinerary = [departure_time, outbound_leg[:-3], fly_duration, arrival_time, price[:-3]]
+    outbound_itinerary = [departure_time, outbound_leg[:-3], fly_duration, arrival_time, price[:-3], carriers[:-1]]
 
     table_rows = [outbound_itinerary]
     print(tabulate(table_rows, tablefmt='grid'), color='green')
