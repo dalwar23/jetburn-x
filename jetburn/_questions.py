@@ -22,23 +22,30 @@ __email__ = 'dalwar.hossain@protonmail.com'
 date_reg_ex = '(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/]' \
               '(0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|' \
               '32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)'
+
+
 # Airport IATA code validator
 class IataCodeValidator(Validator):
     def __init__(self):
         pass
+
     def validate(self, document):
         pass
+
 
 # Date validator
 class DateValidator(Validator):
     def __init__(self):
         pass
+
     def validate(self, document):
         pass
+
 
 class NumberValidator(Validator):
     def __init__(self):
         pass
+
     def validate(self, document):
         try:
             int(document.text)
@@ -56,54 +63,58 @@ if platform.system() == "Windows":
         {
             'type': 'input',
             'name': 'origin',
-            'message': 'Origin airport: ',
+            'message': 'Origin airport:',
             'validate': IataCodeValidator
         },
         {
             'type': 'input',
             'name': 'destination',
-            'message': 'Destination airport: ',
+            'message': 'Destination airport:',
             'validate': IataCodeValidator
         },
         {
             'type': 'input',
             'name': 'fly_out_date',
-            'message': 'Fly out date (dd/mm/yyyy): ',
+            'message': 'Fly out date (dd/mm/yyyy):',
             'validate': DateValidator
         },
         {
             'type': 'input',
             'name': 'adults',
-            'message': 'Adults (>16 Years)? ',
+            'message': 'Adults (>16 Years)?',
             'validate': NumberValidator,
-            'filter': lambda val: int(val)
+            'filter': lambda val: int(val),
+            'default': 1
         },
         {
             'type': 'input',
             'name': 'teens',
-            'message': 'Teens (12-15 Years)? ',
+            'message': 'Teens (12-15 Years)?',
             'validate': NumberValidator,
-            'filter': lambda val: int(val)
+            'filter': lambda val: int(val),
+            'default': 0
         },
         {
             'type': 'input',
             'name': 'children',
-            'message': 'Children (2-11 Years)? ',
+            'message': 'Children (2-11 Years)?',
             'validate': NumberValidator,
-            'filter': lambda val: int(val)
+            'filter': lambda val: int(val),
+            'default': 0
         },
         {
             'type': 'input',
             'name': 'infants',
-            'message': 'Infants (<2 Years)? ',
+            'message': 'Infants (<2 Years)?',
             'validate': NumberValidator,
-            'filter': lambda val: int(val)
+            'filter': lambda val: int(val),
+            'default': 0
         }
     ]
     fly_back_question = {
             'type': 'input',
             'name': 'fly_back_date',
-            'message': 'Fly back date (dd/mm/yyyy): ',
+            'message': 'Fly back date (dd/mm/yyyy):',
             'validate': DateValidator
         }
     windows_round_trip_questions = windows_questions.insert(3, fly_back_question)
