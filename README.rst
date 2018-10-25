@@ -42,13 +42,15 @@ or
 
 Windows
 ^^^^^^^
-Windows terminal (cmd) doesn't support all the unicode codecs and To get the best results -
-please use a terminal emulator like, cmder [`Cmder <http://cmder.net/>`_] or
-ConEmu [`ConEmu <https://conemu.github.io/>`_]. Please use *<xterm>* color scheme from `settings`
-menu, for best visual presentation of the program.
+Windows terminal (cmd/power shell) doesn't support all the unicode codecs and To get the best results -
+please use a terminal emulator like, cmder [`Download Cmder <http://cmder.net/>`_] or
+ConEmu [`Download ConEmu <https://conemu.github.io/>`_]. Please use *<xterm>* color scheme from `settings`
+menu, for the best visual representation of the program.
 
 Considering ``python`` is installed and ``pip`` is configured.
-If pip is not configured, please configure ``pip`` first.
+(*If pip is not configured, please configure ``pip`` first. For installing
+``python`` and configuring ``pip`` see the instructions at the bottom of
+this page.*)
 
 Open Cmder/ConEmu and Type:
 
@@ -82,7 +84,7 @@ To see the valid currency list, type
 
 .. code-block:: shell
 
-   jetburn --info currency
+   jetburn --currency-info all
 
 To find airports by city name, use
 
