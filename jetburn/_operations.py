@@ -17,7 +17,6 @@ import PyInquirer
 # Import local python libraries
 import _release_info as release_info
 import _questions as questions
-import _icons as icon
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
