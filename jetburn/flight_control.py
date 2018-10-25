@@ -7,16 +7,26 @@ from __future__ import print_function
 import sys
 from pyrainbowterm import *
 import requests
-import json
+
 import argparse
 
 # Import local python library
 import _operations as operations
-import _flight_parser as parser
+import _flight_parser as flight_parser
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
 __email__ = 'dalwar.hossain@protonmail.com'
+
+
+# Version information
+def jetburn_version_info():
+    """
+    This function is the entry point for showing the current version information
+
+    :return: <>
+    """
+    operations.__initial_message()
 
 
 # Create mission control
@@ -88,7 +98,7 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
 
     # Parse the response
     for data in json_data['data']:
-        parser.__itinerary_parser(flight_search_data=data, execution_mode=exec_mode)
+        flight_parser.__itinerary_parser(flight_search_data=data, execution_mode=exec_mode)
 
 
 # CLI entry point of jetburn
@@ -106,10 +116,10 @@ def jetburn_cli():
                         help='Three letter currency code.[EUR], USD, AUD, CAD, RON, PLN etc.')
     parser.add_argument('-r', '--result', action='store', dest='results', required=False,
                         help='Number of results to show per search. Default is [5]')
-    parser.add_argument('-i', '--info', action='store', dest='info', required=False,
+    parser.add_argument('--currency-info', action='store', dest='info', required=False,
                         help='Displays information. Usage: jetburn --info currency')
     parser.add_argument('--find-airport', action='store', dest='city_name', required=False,
-                        help='Finds airport names and IATA code by city name. Usage: jetburn --find-airport <city_name>')
+                        help='Find airport names and IATA code by city name. Usage: jetburn --find-airport <city_name>')
     # Parse arguments
     args = parser.parse_args()
 
