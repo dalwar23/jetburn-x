@@ -12,7 +12,7 @@ import re
 from tabulate import tabulate
 from datapackage import Package
 import requests
-import platform
+import PyInquirer
 
 # Import local python libraries
 import _release_info as release_info
@@ -52,10 +52,8 @@ def __initial_message():
 
     """
     # Assign marker
-    if platform.system() == 'Windows':
-        marker = "="
-    else:
-        marker = icon.airplane  # Must be single character
+    marker = "="
+
     # Print a general help message
     text_to_render = 'jetburn'
     fig_let = Figlet(font='banner3')
@@ -123,50 +121,23 @@ def __get_trip_info(round_trip=None):
     """
     This function generates a set of questions for the user
 
+    :param round_trip: (boolean) True or False for round trip
     :return: (dict) A python dict
     """
-    # Import required libraries
-    if platform.system() == 'Windows':
-        try:
-            import PyInquirer
-        except ImportError as e:
-            print('Python module import error! ERROR: {}'.format(e), log_type='error', color='red')
-            sys.exit(1)
-        # Questions for flight search
-        if round_trip:
-            flight_search_questions_win = questions.windows_round_trip_questions
-        else:
-            flight_search_questions_win = questions.windows_questions
-        # Prompt the questions
-        print(flight_search_questions_win)
-        answers = PyInquirer.prompt(flight_search_questions_win)
-        if round_trip:
-            answers = answers
-        else:
-            answers['fly_back_date'] = ''
+    # Get flight search questions
+    flight_search_questions = questions.__get_questions(round_trip=round_trip)
 
-        # Return
-        return answers
+    # Prompt the questions
+    answers = PyInquirer.prompt(flight_search_questions)
+
+    # assign empty date for one way
+    if round_trip:
+        answers = answers
     else:
-        try:
-            import inquirer
-        except ImportError as e:
-            print('Python module import error. ERROR: {}', format(e), log_type='error', color='red')
-            sys.exit(1)
-        # Questions for flight search
-        if round_trip:
-            flight_search_questions = questions.linux_round_trip_questions
-        else:
-            flight_search_questions = questions.linux_one_way_questions
-        # Prompt the questions
-        answers = inquirer.prompt(flight_search_questions)
-        if round_trip:
-            answers = answers
-        else:
-            answers['fly_back_date'] = ''
+        answers['fly_back_date'] = ''
 
-        # Return
-        return answers
+    # Return
+    return answers
 
 
 # Create trip status question
@@ -176,47 +147,22 @@ def __trip_status():
 
     :return: (dict) Python dictionary
     """
-    # Import required python library
-    if platform.system() == 'Windows':
-        try:
-            import PyInquirer
-        except ImportError as e:
-            print('Python module import error! ERROR: {}'.format(e), log_type='error', color='red')
-            sys.exit(1)
 
-        # Create trip type [one way, round trip] question
-        question = [
-            {
-                'type': 'confirm',
-                'message': 'Round Trip? ',
-                'name': 'trip_status',
-                'default': True
-            }
-        ]
-        answer = PyInquirer.prompt(question)
-        if answer['trip_status']:
-            return True
-        else:
-            return False
+    # Create trip type [one way, round trip] question
+    question = [
+        {
+            'type': 'confirm',
+            'message': 'Round Trip?',
+            'name': 'trip_status',
+            'default': True
+        }
+    ]
+    answer = PyInquirer.prompt(question)
+
+    if answer['trip_status']:
+        return True
     else:
-        try:
-            import inquirer
-        except ImportError as e:
-            print('Python module import error. ERROR: {}', format(e), log_type='error', color='red')
-            sys.exit(1)
-
-        # Create trip type [one way, round trip] question
-        question = [
-            inquirer.Text(name='trip_status', message='Round Trip? ([Y]/n) ' + icon.cycle, default='Y',
-                          validate=lambda _, x: re.match('^[a-zA-Z]$', x))
-        ]
-
-        answer = inquirer.prompt(question)
-
-        if answer['trip_status'] == 'Y' or answer['trip_status'] == 'y':
-            return True
-        else:
-            return False
+        return False
 
 
 # Check if currency is a valid currency or not
