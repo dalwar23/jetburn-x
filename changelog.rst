@@ -1,5 +1,10 @@
 Change Log
 ==========
+version v1.4
+------------
+1. Airline name is visible in compact (default) mode
+2. Supports Windows
+
 version v1.3
 ------------
 1. Added warning / disclaimer note
