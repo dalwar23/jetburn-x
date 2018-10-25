@@ -71,7 +71,9 @@ if __name__ == "__main__":
             'Topic :: Software Development :: Libraries :: Python Modules'],
         packages=['jetburn'],
         entry_points={
-            'console_scripts': ['jetburn=jetburn.flight_control:jetburn_cli'],
+            'console_scripts': ['jetburn=jetburn.flight_control:jetburn_cli',
+                                'jetburn-version=jetburn.flight_control:jetburn_version_info'
+                                ],
         },
         include_package_data=True,
         install_requires=['pip>=18.0',
