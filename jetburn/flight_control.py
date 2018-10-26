@@ -24,9 +24,9 @@ def jetburn_version_info():
     """
     This function is the entry point for showing the current version information
 
-    :return: <>
+    :return: (str) prints current version
     """
-    operations.__initial_message()
+    operations.__get_version_info()
 
 
 # Create mission control
@@ -111,15 +111,29 @@ def jetburn_cli():
     # Create parser
     parser = argparse.ArgumentParser(add_help=True)
     parser.add_argument('-m', '--mode', action='store', dest='mode', required=False,
-                        help='Execution mode of the program. Compact[c/compact](default) and Extended [e/extended]')
+                        help='Execution mode of the program. Compact[c/compact](default), Advanced[a/advanced] and '
+                             'Expert [e/expert]. Usage: jetburn -m e OR jetburn -m expert')
     parser.add_argument('-c', '--currency', action='store', dest='currency_code', required=False,
-                        help='Three letter currency code.[EUR], USD, AUD, CAD, RON, PLN etc.')
+                        help='Three letter currency code.[EUR], USD, AUD, CAD, RON, PLN etc.'
+                             ' Usage: jetburn -c USD')
     parser.add_argument('-r', '--result', action='store', dest='results', required=False,
-                        help='Number of results to show per search. Default is [5]')
-    parser.add_argument('--currency-info', action='store', dest='info', required=False,
-                        help='Displays information. Usage: jetburn --info currency')
+                        help='Number of results to show per search. Default is [5]'
+                             ' Usage: jetburn -r 10')
+    parser.add_argument('--currency-info', action='store', dest='currency_info', required=False,
+                        help='Displays if the currency is valid or not for this program. (To be used with -c flag)'
+                             ' Usage: jetburn --currency-info <ISO_4217_currency_code>')
+    parser.add_argument('--airport-info', action='store', dest='airport_info', required=False,
+                        help='Displays information about airport.'
+                             ' Usage: jetburn --airport-info <iata_airport_code>')
+    parser.add_argument('--airline-info', action='store', dest='airline_info', required=False,
+                        help='Displays airline information.'
+                             ' Usage: jetburn --airline-info <iata_airline_code>')
     parser.add_argument('--find-airport', action='store', dest='city_name', required=False,
-                        help='Find airport names and IATA code by city name. Usage: jetburn --find-airport <city_name>')
+                        help='Finds airport names and IATA code by city name.'
+                             ' Usage: jetburn --find-airport <city_name>')
+    parser.add_argument('--find-currency', action='store', dest='country_name', required=False,
+                        help='Finds ISO 4217 currency names and codes by country name.'
+                             ' Usage: jetburn --find-currency <country_name>')
     # Parse arguments
     args = parser.parse_args()
 
@@ -142,13 +156,13 @@ def jetburn_cli():
         _results = int(args.results)
 
     # Check if the currency information argument
-    if args.info is None:
+    if args.currency_info is None:
         pass
-    elif args.info == 'currency':
+    elif args.currency_info == 'all':
         operations.__initial_message()
         operations.__get_currency_names()
     else:
-        print('Invalid input: {}'.format(args.info), log_type='error', color='red')
+        print('Invalid input: {}'.format(args.currency_info), log_type='error', color='red')
         sys.exit(1)
 
     # Check if the search patter is given or not
@@ -160,6 +174,6 @@ def jetburn_cli():
         operations.__get_airport_names_by_city(search_city=pattern)
 
     # Passover the control to mission control if no info check arguments are provided
-    if args.info is None and args.city_name is None:
+    if args.currency_info is None and args.city_name is None:
         # Pass the control to mission control
         mission_control(exec_mode=exec_mode, currency_code=_currency_code, number_of_results=_results)
