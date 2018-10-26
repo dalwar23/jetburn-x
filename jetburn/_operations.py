@@ -51,11 +51,12 @@ def __initial_message():
 
     """
     # Assign marker
-    marker = "="
+    horizontal_marker = "-"
+    vertical_marker = "|"
 
     # Print a general help message
-    text_to_render = 'jetburn'
-    fig_let = Figlet(font='banner3')
+    text_to_render = ' '*3 + 'jetburn'
+    fig_let = Figlet(font='speed')
 
     date_time = datetime.datetime.now()
     _print_string = "Airline ticket explorer program"
@@ -69,19 +70,19 @@ def __initial_message():
     _warn_line1 = 'This program is not an airline ticket booking system and has'
     _warn_line2 = 'no partnership with any airlines or ticketing agents'
     # Create prefix and suffix
-    prefix = marker * 2 + ' '
-    suffix = ' ' + marker * 2
+    prefix = vertical_marker + ' '
+    suffix = ' ' + vertical_marker
     print_string = prefix + _print_string
-    version_release = " v" + release_info.__version__ + "." + release_info.__release__
+    version_release = "v" + release_info.__version__ + "." + release_info.__release__
     license = release_info.__license__
-    version_message = prefix + release_info.__package__ + ": " + version_release + " / " + "License: " + license
+    version_message = prefix + "Version: " + version_release + " / " + "License: " + license
     author_string = prefix + _author_string
     help_string = prefix + _help_string
     warn_line1 = prefix + _warn_line1
     warn_line2 = prefix + _warn_line2
     # Take max
     str_length = max([len(print_string), len(version_message), len(author_string), len(help_string),
-                      len(warn_line1), len(warn_line2)]) + 3
+                      len(warn_line1), len(warn_line2)]) + 2
     blank_space = str_length -(len(prefix) + len(suffix))
     warn_space = blank_space - len(_warn_line0)
     if warn_space % 2 == 0:
@@ -98,10 +99,11 @@ def __initial_message():
     warn_line1_padding = " " * (str_length - len(warn_line1) - len(suffix))
     warn_line2_padding = " " * (str_length - len(warn_line2) - len(suffix))
 
-    # Print
-    line_block = marker * str_length
+    # Print information
+    line_block = '+' + horizontal_marker * (str_length-2) + '+'
     print(fig_let.renderText(text_to_render), color='green')
     print(line_block, print_string, version_message, author_string, help_string, line_block, sep='\n')
+    # Disclaimer
     print (prefix, end='')
     print(' ' * warn_space_before, end='')
     print(_warn_line0, color='orange', end='')
@@ -113,6 +115,17 @@ def __initial_message():
     print(prefix, end='')
     print(_warn_line2 + warn_line2_padding, color='orange', end='')
     print(suffix, line_block, sep='\n')
+
+
+# Get version info
+def __get_version_info():
+    """
+    This function will show the current version
+
+    :return: (str) current version
+    """
+    current_version = release_info.__package__ + " v" + release_info.__version__ + "." + release_info.__release__
+    print(current_version)
 
 
 # Create a list of questions
