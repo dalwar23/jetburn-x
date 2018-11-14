@@ -146,5 +146,9 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
 
     outbound_itinerary = [departure_time, outbound_leg[:-3], fly_duration, arrival_time, price[:-3], carriers[:-1]]
 
+    # for item in outbound_itinerary:
+    #     print("{}|".format(item), end='', color='pink')
+    # print("")
+
     table_rows = [outbound_itinerary]
     print(tabulate(table_rows, tablefmt='grid'), color='green')
