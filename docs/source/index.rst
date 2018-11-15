@@ -1,17 +1,24 @@
 Welcome to jetburn
 ==================
 
-JetBurn (``jetburn``) is an airline ticket explorer program.
+Jetburn is an airline ticket explorer program designed to find the
+lowest priced tickets from origin airport to destination airport. This program is not
+an airline ticket booking system and has **no partnership** with any airlines whatsoever.
+
+.. warning::
+
+   This is not a flight ticket booking system
 
 Overview
 ========
-JetBurn is a specially desinged program to search and find the lowest priced
+JetBurn is a specially designed program to search and find the lowest priced
 airplane ticket between origin airport and destination airport.
 
 Free Usage
 ==========
 I have developed this program from my own personal needs and requirements. Feel free to use
-it as long as you agree and honor the license.
+it as long as you agree and honor the license. License information can be found inside the app. To know more
+about the license please visit `LGPL-3.0 <https://opensource.org/licenses/lgpl-3.0.html>`_
 
 .. toctree::
    :maxdepth: 2
