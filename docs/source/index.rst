@@ -7,7 +7,7 @@ an airline ticket booking system and has **no partnership** with any airlines wh
 
 .. warning::
 
-   This is not a flight ticket booking system
+   This program is not an airline ticket booking system and has no partnership with any airlines or ticketing agents
 
 Overview
 ========
