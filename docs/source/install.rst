@@ -10,8 +10,8 @@ environment.
    or `Pyzo <https://www.pyzo.org>`_. If you use one of these Python distributions, please refer to their online
    documentation.
 
-Assuming that the default python environment already configured on your computer and intend to install ``jetburn``
-inside of it. To create and work with Python virtual environments, please follow instructions on
+Assuming that the default python environment is already configured on your computer and you intend to install
+``jetburn`` inside of it. To create and work with Python virtual environments, please follow instructions on
 `venv <https://docs.python.org/3/library/venv.html>`_ and
 `virtual environments <http://docs.python-guide.org/en/latest/dev/virtualenvs/>`_
 
@@ -39,6 +39,14 @@ current user
 .. code-block:: python
 
    pip install --user jetburn
+
+.. note::
+   If you get an error message while installing in macintosh computer (macOS). Please try to use the following command.
+   .. code-block:: python
+
+      pip install jetburn --ignore-installed six
+   Please remember at the time of writing this documentation, v1.4 doesn't fully support macOS. Send any bug reports to
+   `dalwar.hossain@protonmail.com<>dalwar.hossain@protonmail.com`_
 
 Windows
 -------
