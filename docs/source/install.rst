@@ -44,7 +44,7 @@ current user
    If you get an error message while installing in macintosh computer (macOS). Please try to use the following command.
    ``pip install jetburn --ignore-installed six``
    Please remember, at the time of writing this documentation, v1.4 doesn't fully support macOS. Send any bug reports to
-   `dalwar.hossain@protonmail.com<dalwar.hossain@protonmail.com>`_
+   `dalwar.hossain@protonmail.com <dalwar.hossain@protonmail.com>`_
 
 Windows
 -------
