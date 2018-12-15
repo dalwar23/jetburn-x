@@ -103,9 +103,9 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
 
 # CLI entry point of jetburn
 def jetburn_cli():
-    """
-    This function is the boiler plate to run this program and also parses argument and follow
-    through to mission control
+    """This function is the boiler plate to run this program
+
+    Parses argument and follow through to mission control
     """
 
     # Create parser
