@@ -30,5 +30,5 @@ For detailed documentation, please visit: `JetBurn Documentation <http://jetburn
 
 Bug Report
 ----------
-`dalwar.hossain@protonmail.com <mailto:dalwar.hossain@protonmail.com>`_
+`Dalwar Hossain <mailto:dalwar.hossain@protonmail.com>`_
 
