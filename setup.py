@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-Setup script for jetburn
+"""Setup script for jetburn
+
 Install jetburn with:
 python setup.py install
 """
