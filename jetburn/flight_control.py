@@ -134,6 +134,9 @@ def jetburn_cli():
     parser.add_argument('--find-currency', action='store', dest='country_name', required=False,
                         help='Finds ISO 4217 currency names and codes by country name.'
                              ' Usage: jetburn --find-currency <country_name>')
+    parser.add_argument('-v', '--version', action='store', dest='version', required=False,
+                        help='Shows the current version of jetburn'
+                             ' Usage: jetburn -v / --version')
     # Parse arguments
     args = parser.parse_args()
 
