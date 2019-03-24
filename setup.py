@@ -72,12 +72,13 @@ if __name__ == "__main__":
         packages=find_packages(),
         entry_points={
             'console_scripts': ['jetburn=jetburn.flight_control:jetburn_cli',
-                                'jetburn-version=jetburn.flight_control:jetburn_version_info'
+                                'jetburn-info=jetburn.flight_control:jetburn_info'
                                 ],
         },
         include_package_data=True,
         install_requires=['pyrainbowterm',
                           'pyfiglet',
+                          'wasabi',
                           'PyInquirer',
                           'tabulate',
                           'datapackage',
