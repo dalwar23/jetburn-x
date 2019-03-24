@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Import print options for python2 and python3 compatibility
 from __future__ import print_function
 
-# Import python libraries
+# Import builtin python libraries
 import sys
-from pyrainbowterm import *
-import requests
-
 import argparse
 
+# Import external python libraries
+import requests
+from pyrainbowterm import *
+
 # Import local python library
-import _operations as operations
-import _flight_parser as flight_parser
+from . import _operations as operations
+from . import _flight_parser as flight_parser
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
@@ -26,7 +28,8 @@ def jetburn_version_info():
 
     :return: (str) prints current version
     """
-    operations.__get_version_info()
+
+    operations.get_version_info()
 
 
 # Create mission control
@@ -39,23 +42,24 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
     :param number_of_results: (int) Number of results to show per search
     :return: (list) List of responses from python requests
     """
+
     # Print initial message
-    operations.__initial_message()
+    operations.initial_message()
     print('Initializing program.....', log_type='info')
     print('Preparing airbase.....', log_type='info')
 
     # Check currency
-    valid_currency = operations.__is_valid_currency(currency=currency_code)
+    valid_currency = operations.is_valid_currency(currency=currency_code)
     if valid_currency:
         currency = currency_code
     else:
         currency = 'EUR'
 
     # Get the trip status - one way or round trip
-    trip_status = operations.__trip_status()
+    trip_status = operations.trip_status()
 
     # Get questions according to trip status
-    trip_info = operations.__get_trip_info(round_trip=trip_status)
+    trip_info = operations.get_trip_info(round_trip=trip_status)
 
     # Construct URL
     print('Getting ready for take off.....', log_type='info')
@@ -98,7 +102,7 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
 
     # Parse the response
     for data in json_data['data']:
-        flight_parser.__itinerary_parser(flight_search_data=data, execution_mode=exec_mode)
+        flight_parser.itinerary_parser(flight_search_data=data, execution_mode=exec_mode)
 
 
 # CLI entry point of jetburn
@@ -160,21 +164,21 @@ def jetburn_cli():
 
     # Check if the currency information argument
     if args.currency_info is None:
-        pass
+        pass  # noqa
     elif args.currency_info == 'all':
-        operations.__initial_message()
-        operations.__get_currency_names()
+        operations.initial_message()
+        operations.get_currency_names()
     else:
         print('Invalid input: {}'.format(args.currency_info), log_type='error', color='red')
         sys.exit(1)
 
     # Check if the search patter is given or not
     if args.city_name is None:
-        pass
+        pass  # noqa
     else:
-        operations.__initial_message()
+        operations.initial_message()
         pattern = args.city_name
-        operations.__get_airport_names_by_city(search_city=pattern)
+        operations.get_airport_names_by_city(search_city=pattern)
 
     # Passover the control to mission control if no info check arguments are provided
     if args.currency_info is None and args.city_name is None:
