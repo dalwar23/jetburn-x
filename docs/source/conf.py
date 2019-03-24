@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # Get version and release information
 package_name = 'jetburn'
-release_file = os.path.join('../..', package_name, '_release_info.py')
+release_file = os.path.join('../..', package_name, '_version.py')
 release_info = {}
 with open(release_file, 'rb') as rf:
     exec(rf.read(), release_info)
