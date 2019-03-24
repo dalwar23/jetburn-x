@@ -6,15 +6,18 @@ from __future__ import print_function, unicode_literals
 
 # Import builtin python libraries
 from datetime import datetime
-from tabulate import tabulate
 
 # Import external python libraries
+from tabulate import tabulate
 import requests
-from pyrainbowterm import print
+import wasabi
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
 __email__ = 'dalwar.hossain@protonmail.com'
+
+# Create msg from wasabi printer class
+msg = wasabi.Printer()
 
 
 # Get airline information from the Internet
@@ -33,7 +36,9 @@ def _get_airline_info():
         else:
             response.raise_for_status()
     except requests.ConnectionError as err:
-        print('Airline information service is offline! ERROR: {}'.format(err), log_type='error', color='red')
+        airlines = "undefined"
+        err_msg = "Airline information service is offline! ERROR: {}".format(err)
+        msg.fail(err_msg)
 
     # Return
     return airlines
@@ -126,8 +131,9 @@ def itinerary_parser(flight_search_data=None, execution_mode=None):
         flight_leg['flight_duration'] = flight_time
         flight_leg['airline_code'] = item['airline']
         flight_leg['flight_number'] = item['airline'] + " " + str(item['flight_no'])
-        airline_full_name = (entry['name'] for entry in airlines if entry['id'] == item['airline']).next()
-        flight_leg['airline_full_name'] = airline_full_name
+        # airline_full_name = (entry['name'] for entry in airlines if entry['id'] == item['airline']).next()
+        airline_full_name = [entry['name'] for entry in airlines if entry['id'] == item['airline']]
+        flight_leg['airline_full_name'] = airline_full_name[0]
         if item['return'] == 0:
             route.append(flight_leg)
         elif item['return'] == 1:
@@ -151,4 +157,4 @@ def itinerary_parser(flight_search_data=None, execution_mode=None):
     outbound_itinerary = [departure_time, outbound_leg[:-3], fly_duration, arrival_time, price[:-3], carriers[:-1]]
 
     table_rows = [outbound_itinerary]
-    print(tabulate(table_rows, tablefmt='grid'), color='green')
+    print(tabulate(table_rows, tablefmt='grid'))

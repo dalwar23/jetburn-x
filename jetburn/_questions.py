@@ -11,7 +11,6 @@ from PyInquirer import Validator, ValidationError
 __author__ = 'Dalwar Hossain'
 __email__ = 'dalwar.hossain@protonmail.com'
 
-
 # Date generation regular expression
 date_reg_ex = "(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/]" \
               "(0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|" \
@@ -115,20 +114,21 @@ one_way_questions = [
     }
 ]
 fly_back_question = {
-        'type': 'input',
-        'name': 'fly_back_date',
-        'message': 'Fly back date (dd/mm/yyyy):',
-        'validate': DateValidator
+    'type': 'input',
+    'name': 'fly_back_date',
+    'message': 'Fly back date (dd/mm/yyyy):',
+    'validate': DateValidator
 }
 
 
-def _get_questions(round_trip=None):
+def get_questions(round_trip=None):
     """
     This function returns a set of questions based on trip type
 
     :param round_trip: (boolean) If it's a round trip or not
     :return: (list) python list of dictionary based questions
     """
+
     if round_trip:
         one_way_questions.insert(3, fly_back_question)
         round_trip_questions = one_way_questions
