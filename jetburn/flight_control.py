@@ -93,7 +93,7 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
 
     # Check the received response
     if response.status_code == 200:
-        msg.info("Cleared for takeoff.....")
+        msg.good("Cleared for takeoff.....")
         try:
             json_data = response.json()
         except ValueError as err:

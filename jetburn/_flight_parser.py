@@ -11,6 +11,7 @@ from datetime import datetime
 from tabulate import tabulate
 import requests
 import wasabi
+from wasabi import color
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
@@ -131,15 +132,12 @@ def itinerary_parser(flight_search_data=None, execution_mode=None):
         flight_leg['flight_duration'] = flight_time
         flight_leg['airline_code'] = item['airline']
         flight_leg['flight_number'] = item['airline'] + " " + str(item['flight_no'])
-        # airline_full_name = (entry['name'] for entry in airlines if entry['id'] == item['airline']).next()
         airline_full_name = [entry['name'] for entry in airlines if entry['id'] == item['airline']]
         flight_leg['airline_full_name'] = airline_full_name[0]
         if item['return'] == 0:
             route.append(flight_leg)
         elif item['return'] == 1:
             ret_route.append(flight_leg)
-
-    # print("{}".format(json.dumps(route, indent=4)))
 
     for index, route_leg in enumerate(route):
         if index == 0:
@@ -157,4 +155,5 @@ def itinerary_parser(flight_search_data=None, execution_mode=None):
     outbound_itinerary = [departure_time, outbound_leg[:-3], fly_duration, arrival_time, price[:-3], carriers[:-1]]
 
     table_rows = [outbound_itinerary]
-    print(tabulate(table_rows, tablefmt='grid'))
+    formatted_table = color(tabulate(table_rows, tablefmt='grid'), fg="cyan")
+    print(formatted_table)
