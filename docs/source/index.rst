@@ -3,11 +3,11 @@ Welcome to JetBurn
 
 Jetburn(``jetburn``) is an airline ticket explorer program designed to find the
 lowest priced tickets from origin airport to destination airport. This program is not
-an airline ticket booking system and has **no partnership** with any airlines whatsoever.
+an airline ticket booking system and has **no affiliation** with any airlines whatsoever.
 
 .. warning::
 
-   This program is not an airline ticket booking system and has no partnership with any airlines or ticketing agents
+   This program is not an airline ticket booking system and has no affiliation with any airlines or ticketing agents
 
 Overview
 ========
