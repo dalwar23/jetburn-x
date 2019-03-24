@@ -14,11 +14,16 @@ Airline ticket explorer program
     :alt: Build Status
     :target: https://travis-ci.org/dharif23/jetburn
 
+.. image:: https://readthedocs.org/projects/jetburn/badge/?version=latest
+    :target: https://jetburn.readthedocs.io/?badge=latest
+    :alt: Documentation Status
+
 Description
 -----------
+
 Jetburn is an airline ticket explorer program designed to find the
 lowest priced tickets from origin airport to destination airport. This program is not
-an airline ticket booking system and has **no partnership** with any airlines whatsoever.
+an airline ticket booking system and has **no affiliation** with any airlines whatsoever.
 
 .. warning::
 
@@ -26,9 +31,11 @@ an airline ticket booking system and has **no partnership** with any airlines wh
 
 Documentation
 -------------
+
 For detailed documentation, please visit: `JetBurn Documentation <http://jetburn.readthedocs.io/>`_
 
 Bug Report
 ----------
+
 `Dalwar Hossain <mailto:dalwar.hossain@protonmail.com>`_
 

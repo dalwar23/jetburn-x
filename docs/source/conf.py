@@ -32,9 +32,9 @@ copyright = u'2018, Dalwar Hossain'
 author = u'Dalwar Hossain'
 
 # The short X.Y version
-version = release_info['__version__']
+version = release_info['__full_version__']
 # The full version, including alpha/beta/rc tags
-release = release_info['__release__']
+release = release_info['__short_version__']
 
 
 # -- General configuration ---------------------------------------------------
