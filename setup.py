@@ -4,7 +4,7 @@
 """Setup script for jetburn
 
 Install jetburn with:
-python setup.py install
+python2/3 setup.py install
 """
 
 # Source code meta data
@@ -14,7 +14,7 @@ __email__ = 'dalwar.hossain@protonmail.com'
 # Import python libraries
 import os
 import sys
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 # Check if enough parameter has been given to install or not
@@ -30,7 +30,7 @@ if sys.version_info[:2] < (2, 7):
 
 # Get version and release for this package
 package_name = 'jetburn'
-release_file = os.path.join(package_name, '_release_info.py')
+release_file = os.path.join(package_name, '_version.py')
 release_info = {}
 with open(release_file, 'rb') as rf:
     exec(rf.read(), release_info)
@@ -46,15 +46,15 @@ def readme():
 if __name__ == "__main__":
     setup(
         name=package_name,
-        version=release_info['__version__'] + '.' + release_info['__release__'],
+        version=release_info['__full_version__'],
         maintainer='Dalwar Hossain',
         maintainer_email='dalwar.hossain@protonmail.com',
         author=release_info['__author__'],
-        author_email=release_info['__email__'],
+        author_email=release_info['__author_email__'],
         description='jetburn - Airline ticket explorer program',
         keywords=['jetburn', 'airlines', 'tickets', 'fares'],
         long_description=readme(),
-        license=release_info['__license__'],
+        license=release_info['__app_license__'],
         platforms=['Linux', 'Mac OSX', 'Windows', 'Unix'],
         url='https://github.com/dharif23/jetburn',
         download_url='https://github.com/dharif23/jetburn',
@@ -69,25 +69,24 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.6',
             'Programming Language :: Python :: 3.7',
             'Topic :: Software Development :: Libraries :: Python Modules'],
-        packages=['jetburn'],
+        packages=find_packages(),
         entry_points={
             'console_scripts': ['jetburn=jetburn.flight_control:jetburn_cli',
                                 'jetburn-version=jetburn.flight_control:jetburn_version_info'
                                 ],
         },
         include_package_data=True,
-        install_requires=['pyrainbowterm>=1.0',
-                          'pyfiglet>=0.7.6',
-                          'inquirer>=2.5.1',
-                          'PyInquirer>=1.0.2',
-                          'tabulate>=0.8.2',
-                          'datapackage>=1.5.1',
-                          'requests>=2.20.0',
-                          'sphinx>=1.7.1',
-                          'recommonmark >=0.4.0',
-                          'sphinx_rtd_theme>=0.4.1',
+        install_requires=['pyrainbowterm',
+                          'pyfiglet',
+                          'PyInquirer',
+                          'tabulate',
+                          'datapackage',
+                          'requests',
+                          'sphinx',
+                          'recommonmark',
+                          'sphinx_rtd_theme',
                           ],
         test_suite='nose.collector',
-        tests_require=['nose>=1.3.7', 'nose-cover3>=0.1.0'],
+        tests_require=['nose', 'nose-cover3'],
         zip_safe=False,
     )
