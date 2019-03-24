@@ -10,7 +10,7 @@ import argparse
 
 # Import external python libraries
 import requests
-from pyrainbowterm import *
+import wasabi
 
 # Import local python library
 from . import _operations as operations
@@ -20,16 +20,19 @@ from . import _flight_parser as flight_parser
 __author__ = 'Dalwar Hossain'
 __email__ = 'dalwar.hossain@protonmail.com'
 
+# Create msg from wasabi printer class
+msg = wasabi.Printer()
 
-# Version information
-def jetburn_version_info():
+
+# Package information
+def jetburn_info():
     """
     This function is the entry point for showing the current version information
 
     :return: (str) prints current version
     """
 
-    operations.get_version_info()
+    operations.get_info()
 
 
 # Create mission control
@@ -45,8 +48,8 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
 
     # Print initial message
     operations.initial_message()
-    print('Initializing program.....', log_type='info')
-    print('Preparing airbase.....', log_type='info')
+    msg.info("Initializing program.....")
+    msg.info("Preparing airbase.....")
 
     # Check currency
     valid_currency = operations.is_valid_currency(currency=currency_code)
@@ -62,7 +65,7 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
     trip_info = operations.get_trip_info(round_trip=trip_status)
 
     # Construct URL
-    print('Getting ready for take off.....', log_type='info')
+    msg.info("Getting ready for take off.....")
     api_endpoint = "https://api.skypicker.com"
     flights = "/flights"
     payload = {
@@ -85,20 +88,21 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
     url = api_endpoint + flights
 
     # Send request to web page
-    print('Requesting to takeoff.....', log_type='info')
+    msg.info("Requesting to takeoff.....")
     response = requests.get(url, params=payload)
 
     # Check the received response
     if response.status_code == 200:
-        print('Cleared for takeoff', log_type='info')
+        msg.info("Cleared for takeoff.....")
         try:
             json_data = response.json()
         except ValueError as err:
-            print('Flight aborted due to JSON failure! ERROR: {}'.format(err))
-            sys.exit(1)
+            err_msg = "Flight aborted due to JSON failure! ERROR: {}".format(err)
+            msg.fail(err_msg)
+            sys.exit(-1)
     else:
-        print('Flight suspended. Contact ATC!', log_type='error', color='red')
-        sys.exit(1)
+        msg.fail("Flights are suspended. Contact ATC!")
+        sys.exit(-1)
 
     # Parse the response
     for data in json_data['data']:
@@ -169,8 +173,9 @@ def jetburn_cli():
         operations.initial_message()
         operations.get_currency_names()
     else:
-        print('Invalid input: {}'.format(args.currency_info), log_type='error', color='red')
-        sys.exit(1)
+        err_msg = "Invalid input: {}".format(args.currency_info)
+        msg.fail(err_msg)
+        sys.exit(-1)
 
     # Check if the search patter is given or not
     if args.city_name is None:
