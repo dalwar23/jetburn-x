@@ -1,31 +1,35 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Import future print function and unicode literals for python2.7 support
 from __future__ import print_function, unicode_literals
 
-# Import python libraries
+# Import builtin python libraries
 import sys
 import datetime
+
+# Import external python libraries
 from pyrainbowterm import *
 from pyfiglet import Figlet
-import re
 from tabulate import tabulate
 from datapackage import Package
 import requests
 import PyInquirer
 
-# Import local python libraries
-import _release_info as release_info
-import _questions as questions
+# Import local custom python libraries
+from . import _version as release_info
+from . import _questions as questions
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
 __email__ = 'dalwar.hossain@protonmail.com'
 
-
-reload(sys)
-sys.setdefaultencoding('utf8')
-
+# Take care of character encoding for python2
+if sys.version_info.major == 2:
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+else:
+    pass  # noqa
 
 # List valid Currencies
 valid_currencies = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT',
@@ -45,11 +49,12 @@ valid_currencies = ['AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AUD', 'AWG
 
 
 # Create initial message
-def __initial_message():
+def initial_message():
     """
     This function creates initial message and prints it
 
     """
+
     # Assign marker
     horizontal_marker = "-"
     vertical_marker = "|"
@@ -62,7 +67,7 @@ def __initial_message():
     _print_string = "Airline ticket explorer program"
     _print_string += " [" + date_time.strftime("%d-%B-%Y %H:%M:%S") + "]"
     # Author message display
-    _author_string = "Author: {} ({})".format(release_info.__author__, release_info.__email__)
+    _author_string = "Author: {} ({})".format(release_info.__author__, release_info.__author_email__)
     # Help message
     _help_string = "Need help? jetburn -h/--help"
     # Warning message
@@ -73,9 +78,9 @@ def __initial_message():
     prefix = vertical_marker + ' '
     suffix = ' ' + vertical_marker
     print_string = prefix + _print_string
-    version_release = "v" + release_info.__version__ + "." + release_info.__release__
-    license = release_info.__license__
-    version_message = prefix + "Version: " + version_release + " / " + "License: " + license
+    version_release = release_info.__full_version__
+    license_ = release_info.__app_license__
+    version_message = prefix + "Version: " + version_release + " / " + "License: " + license_
     author_string = prefix + _author_string
     help_string = prefix + _help_string
     warn_line1 = prefix + _warn_line1
@@ -86,11 +91,11 @@ def __initial_message():
     blank_space = str_length -(len(prefix) + len(suffix))
     warn_space = blank_space - len(_warn_line0)
     if warn_space % 2 == 0:
-        warn_space_before = warn_space/2
-        warn_space_after = warn_space/2
+        warn_space_before = int(warn_space/2)
+        warn_space_after = int(warn_space/2)
     else:
-        warn_space_before = warn_space/2
-        warn_space_after = warn_space/2 + 1
+        warn_space_before = int(warn_space/2)
+        warn_space_after = int(warn_space/2 + 1)
     # Create padding
     print_string = print_string + " " * (str_length - len(print_string) - len(suffix)) + suffix
     version_message = version_message + " " * (str_length - len(version_message) - len(suffix)) + suffix
@@ -104,7 +109,7 @@ def __initial_message():
     print(fig_let.renderText(text_to_render), color='green')
     print(line_block, print_string, version_message, author_string, help_string, line_block, sep='\n')
     # Disclaimer
-    print (prefix, end='')
+    print(prefix, end='')
     print(' ' * warn_space_before, end='')
     print(_warn_line0, color='orange', end='')
     print(' ' * warn_space_after, end='')
@@ -118,42 +123,44 @@ def __initial_message():
 
 
 # Get version info
-def __get_version_info():
+def get_version_info():
     """
     This function will show the current version
 
     :return: (str) current version
     """
-    current_version = release_info.__package__ + " v" + release_info.__version__ + "." + release_info.__release__
+
+    current_version = release_info.__full_version__
     print(current_version)
 
 
 # Create a list of questions
-def __get_trip_info(round_trip=None):
+def get_trip_info(round_trip=None):
     """
     This function generates a set of questions for the user
 
     :param round_trip: (boolean) True or False for round trip
     :return: (dict) A python dict
     """
+
     # Get flight search questions
     flight_search_questions = questions.__get_questions(round_trip=round_trip)
 
     # Prompt the questions
-    answers = PyInquirer.prompt(flight_search_questions)
+    answers_ = PyInquirer.prompt(flight_search_questions)
 
     # assign empty date for one way
     if round_trip:
-        answers = answers
+        answers = answers_
     else:
-        answers['fly_back_date'] = ''
+        answers = answers_['fly_back_date'] = ''
 
     # Return
     return answers
 
 
 # Create trip status question
-def __trip_status():
+def trip_status():
     """
     This function helps to determine trip status (one way or round trip)
 
@@ -178,13 +185,14 @@ def __trip_status():
 
 
 # Check if currency is a valid currency or not
-def __is_valid_currency(currency=None):
+def is_valid_currency(currency=None):
     """
     This function check if the currency is in the valid currency list or not
 
     :param currency: (str) Three letter upper case currency code
     :return: (boolean) True or false
     """
+
     # Check if given currency is valid or not
     if currency in valid_currencies:
         return True
@@ -193,12 +201,13 @@ def __is_valid_currency(currency=None):
 
 
 # List the names of valid currencies according to their internation currency code
-def __get_currency_names():
+def get_currency_names():
     """
     This function generates human readable names for the valid currency codes
 
-    :return: <>
+    :return: (list) Currency name
     """
+
     # Create a package for currency data
     print('Collecting currency information from internet.....', log_type='info')
     package = Package('https://datahub.io/core/currency-codes/datapackage.json')
@@ -224,20 +233,21 @@ def __get_currency_names():
                 currency = entry['Currency']
                 currency_with_code = currency_code + " (" + currency + ")"
             else:
-                pass
+                pass  # noqa
         currency_table_row = [country, currency_with_code]
         currency_table_rows.append(currency_table_row)
     print(tabulate(currency_table_rows, headers=currency_table_header, tablefmt='grid'), color='green')
 
 
 # List all the valid airport codes and full airport names
-def __get_airport_names_by_city(search_city=None):
+def get_airport_names_by_city(search_city=None):
     """
     This function searches for IATA codes
 
     :param search_city: (str) pattern to search for in airport names for IATA code
     :return: (str) three letter IATA code
     """
+
     # TODO Add country name
     # Create a package for currency data
     print('Collecting airport information from internet.....', log_type='info')
@@ -257,7 +267,6 @@ def __get_airport_names_by_city(search_city=None):
     # Find location
     found_airports = []
     for airport in airports:
-        # result = re.search(search_pattern.lower(), airport['name'].lower())
         if airport['municipality'] is not None:
             if search_city.lower() in airport['municipality'].lower():
                 result = True
@@ -266,7 +275,7 @@ def __get_airport_names_by_city(search_city=None):
         elif airport['municipality'] is None or airport['municipality'] == 'null':
             result = False
         else:
-            pass
+            pass  # noqa
 
         if result:
             found_airports.append(airport)
@@ -276,7 +285,7 @@ def __get_airport_names_by_city(search_city=None):
     airport_table_rows = []
     for airport in found_airports:
         if airport['iata_code'] == 'null' or airport['iata_code'] == 'None' or airport['iata_code'] is None:
-            pass
+            pass  # noqa
         else:
             airport_table_row = [airport['name'], airport['municipality'], airport['iata_code']]
             airport_table_rows.append(airport_table_row)

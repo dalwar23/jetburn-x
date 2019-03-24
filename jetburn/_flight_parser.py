@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+# Import future print function and unicode literals for python2.7 support
+from __future__ import print_function, unicode_literals
 
-# Import python libraries
-import requests
-from pyrainbowterm import print
-import json
+# Import builtin python libraries
 from datetime import datetime
 from tabulate import tabulate
+
+# Import external python libraries
+import requests
+from pyrainbowterm import print
 
 # Source code meta data
 __author__ = 'Dalwar Hossain'
@@ -16,12 +18,13 @@ __email__ = 'dalwar.hossain@protonmail.com'
 
 
 # Get airline information from the Internet
-def __get_airline_info():
+def _get_airline_info():
     """
     This function gets airline info from the Internet
 
     :return: (json)(list) List of dictionary objects
     """
+
     url = 'https://api.skypicker.com/airlines'
     try:
         response = requests.get(url)
@@ -37,12 +40,13 @@ def __get_airline_info():
 
 
 # Calculate total flight time in a flight leg
-def __calculate_layover_time(arrival_time=None, departure_time=None):
+def _calculate_layover_time(arrival_time=None, departure_time=None):
     """
     This function calculates layover time between flights
 
     :return: (str) Layover time in hour and minutes
     """
+
     # Removing mili seconds
     dtime = departure_time
     atime = arrival_time
@@ -57,12 +61,13 @@ def __calculate_layover_time(arrival_time=None, departure_time=None):
 
 
 # Calculate total flight time in a flight leg
-def __calculate_flight_time(departure_time=None, arrival_time=None):
+def _calculate_flight_time(departure_time=None, arrival_time=None):
     """
     This function calculates total flight time for a single leg
 
     :return: (str) Flight time in hour and minutes
     """
+
     # Removing milli-seconds
     dtime = departure_time
     atime = arrival_time
@@ -77,18 +82,19 @@ def __calculate_flight_time(departure_time=None, arrival_time=None):
 
 
 # Flight search parser function
-def __itinerary_parser(flight_search_data=None, execution_mode=None):
+def itinerary_parser(flight_search_data=None, execution_mode=None):
     """
     This function parses flight search data
 
     :param flight_search_data: (list) List of dictionaries with flight information
-    :return: <>
+    :returns: (list) Shows a girded table
     """
+
     # Assign data for the search
     data = flight_search_data
 
     # Get the airline information data
-    airlines = __get_airline_info()
+    airlines = _get_airline_info()
 
     fly_duration = data['fly_duration']
     airport_change = data['has_airport_change']
@@ -102,7 +108,7 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
     route = []
     ret_route = []
     for index, item in enumerate(data['route']):
-        flight_leg = {}
+        flight_leg = dict()
         flight_leg['leg_no'] = index + 1
         flight_leg['origin_city'] = "{}".format(item['cityFrom'])
         flight_leg['origin_airport'] = "{}".format(item['flyFrom'])
@@ -112,12 +118,11 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
         flight_leg['arrival_time'] = datetime.utcfromtimestamp(item['aTime']).strftime('%a %d %b %H:%M')
         if index == 0:
             flight_leg['layover'] = (str(0))
-            pass
         else:
-            layover_time = __calculate_layover_time(arrival_time=data['route'][index - 1]['aTime'],
-                                                    departure_time=data['route'][index]['dTime'])
+            layover_time = _calculate_layover_time(arrival_time=data['route'][index - 1]['aTime'],
+                                                   departure_time=data['route'][index]['dTime'])
             flight_leg['layover'] = layover_time
-        flight_time = __calculate_flight_time(departure_time=item['dTimeUTC'], arrival_time=item['aTimeUTC'])
+        flight_time = _calculate_flight_time(departure_time=item['dTimeUTC'], arrival_time=item['aTimeUTC'])
         flight_leg['flight_duration'] = flight_time
         flight_leg['airline_code'] = item['airline']
         flight_leg['flight_number'] = item['airline'] + " " + str(item['flight_no'])
@@ -142,13 +147,8 @@ def __itinerary_parser(flight_search_data=None, execution_mode=None):
             else:
                 if airport_change:
                     outbound_leg += " [Change Airport] "
-                pass
 
     outbound_itinerary = [departure_time, outbound_leg[:-3], fly_duration, arrival_time, price[:-3], carriers[:-1]]
-
-    # for item in outbound_itinerary:
-    #     print("{}|".format(item), end='', color='pink')
-    # print("")
 
     table_rows = [outbound_itinerary]
     print(tabulate(table_rows, tablefmt='grid'), color='green')
