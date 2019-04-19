@@ -13,6 +13,7 @@ version 2.1.0
 7. Check all available currency
 8. Realtime IATA codes extract everyday, so always updated
 9. Important methods has been made public
+10. ``-v`` or ``--version`` flag is introduced
 
 version v1.5
 ------------

@@ -140,11 +140,15 @@ def get_info():
     """
 
     package_author = release_info.__author__
+    author_email = release_info.__author_email__
+    package_name = release_info.__package_name__
     package_license = release_info.__app_license__
     current_version = release_info.__full_version__
 
-    print("Author: {}".format(package_author), "License: {}".format(package_license),
-          "Version: {}".format(current_version), sep="\n")
+    msg.good("Package: {}".format(package_name))
+    msg.good("Version: {}".format(current_version))
+    msg.good("License: {}".format(package_license))
+    msg.info("Author: {} ({})".format(package_author, author_email))
 
 
 # Create a list of questions
