@@ -9,7 +9,7 @@ install:
 
 # Script to run
 script:
-  - jetburn -v
+  - jetburn --version
   - echo "passed"
 
 # Github Branch
