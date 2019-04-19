@@ -4,7 +4,6 @@
 
 pyfiglet >=0.7.6
 requests >= 2.20.0
-pyrainbowterm >= 1.0
 inquirer >= 2.5.1
 tabulate >= 0.8.2
 datapackage >= 1.5.1
