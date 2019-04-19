@@ -3,11 +3,17 @@ Tutorials
 
 Usage
 -----
-After installation, type in a terminal
+After installation, check the installation
 
 .. code-block:: shell
 
-   jetburn
+   jetburn --version
+
+Get full information about ``jetburn``
+
+.. code-block:: shell
+
+    jetburn-info
 
 To get help please type
 
@@ -15,11 +21,11 @@ To get help please type
 
    jetburn --help
 
-To see the valid currency list, type
+To start the app, type
 
 .. code-block:: shell
 
-   jetburn --currency-info all
+    jetburn
 
 To find airports by city name, use
 
@@ -37,3 +43,15 @@ an integer. Default is set to ``5`` and maximum is ``200``.
    jetburn -r 10
 
 This will show 10 results for that particular flight search.
+
+To see the price in desired currency please type
+
+.. code-block:: shell
+
+    jetburn -c <desired_currency_code>
+
+How to get desired currency code? To see the valid currency list, type
+
+.. code-block:: shell
+
+   jetburn --currency-info all

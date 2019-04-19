@@ -14,7 +14,6 @@ version 2.1.0
 8. Realtime IATA codes extract everyday, so always updated
 9. Important methods has been made public
 10. ``-v`` or ``--version`` flag is introduced
-11. Argument management through ``click 7.0``
 
 version v1.5
 ------------
