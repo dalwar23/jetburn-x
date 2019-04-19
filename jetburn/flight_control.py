@@ -32,7 +32,7 @@ def jetburn_info():
     :return: (str) prints current version
     """
 
-    operations.get_info()
+    operations.get_info(flag="info-menu")
 
 
 # Create mission control
@@ -142,7 +142,7 @@ def jetburn_cli():
     parser.add_argument('--find-currency', action='store', dest='country_name', required=False,
                         help='Finds ISO 4217 currency names and codes by country name.'
                              ' Usage: jetburn --find-currency <country_name>')
-    parser.add_argument('-v', '--version', action='version', version=operations.get_info(),
+    parser.add_argument('-v', '--version', action='version', version=operations.get_info(flag="arg_menu"),
                         help='Shows current version of jetburn, Usage: jetburn -v/--version')
 
     # Parse arguments

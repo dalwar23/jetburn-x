@@ -132,10 +132,11 @@ def initial_message():
 
 
 # Get version info
-def get_info():
+def get_info(flag=None):
     """
     This function will show the current version
 
+    :param flag: Flag to determine the output
     :return: (str) Package information
     """
 
@@ -145,10 +146,13 @@ def get_info():
     package_license = release_info.__app_license__
     current_version = release_info.__full_version__
 
-    msg.good("Package: {}".format(package_name))
-    msg.good("Version: {}".format(current_version))
-    msg.good("License: {}".format(package_license))
-    msg.info("Author: {} ({})".format(package_author, author_email))
+    if flag == "info-menu":
+        msg.good("Package: {}".format(package_name))
+        msg.good("Version: {}".format(current_version))
+        msg.good("License: {}".format(package_license))
+        msg.info("Author: {} ({})".format(package_author, author_email))
+    else:
+        return current_version
 
 
 # Create a list of questions
