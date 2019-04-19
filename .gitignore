@@ -12,6 +12,7 @@ mprofile_*.dat
 # Virtual environment #
 #######################
 venv/
+venv3/
 
 # Setuptools distribution folder #
 ##################################

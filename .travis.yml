@@ -15,6 +15,7 @@ install:
 # Script to run
 script:
   - jetburn --version
+  - jetburn-info
   - echo "passed"
 
 # Github Branch
