@@ -26,4 +26,5 @@ about the license please visit `LGPL-3.0 <https://opensource.org/licenses/lgpl-3
 
    install
    tutorials
+   api_references
    changelog
