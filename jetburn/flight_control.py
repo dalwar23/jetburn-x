@@ -59,35 +59,43 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
         currency = 'EUR'
 
     # Get the trip status - one way or round trip
-    trip_status = operations.trip_status()
+    try:
+        trip_status = operations.trip_status()
+    except KeyError:
+        msg.fail("Something went wrong or user aborted the program")
+        sys.exit(1)
 
     # Get questions according to trip status
     trip_info = operations.get_trip_info(round_trip=trip_status)
 
     # Construct URL
-    msg.info("Getting ready for take off.....")
     api_endpoint = "https://api.skypicker.com"
     flights = "/flights"
-    payload = {
-        'flyFrom': trip_info['origin'].upper(),
-        'to': trip_info['destination'].upper(),
-        'dateFrom': trip_info['fly_out_date'],
-        'dateTo': trip_info['fly_out_date'],
-        'returnFrom': trip_info['fly_back_date'],
-        'returnTo': trip_info['fly_back_date'],
-        'adults': trip_info['adults'],
-        'teens': trip_info['teens'],
-        'children': trip_info['children'],
-        'infants': trip_info['infants'],
-        'curr': currency,
-        'limit': number_of_results,
-        'partner': 'picky'
-    }
+    try:
+        payload = {
+            'flyFrom': trip_info['origin'].upper(),
+            'to': trip_info['destination'].upper(),
+            'dateFrom': trip_info['fly_out_date'],
+            'dateTo': trip_info['fly_out_date'],
+            'returnFrom': trip_info['fly_back_date'],
+            'returnTo': trip_info['fly_back_date'],
+            'adults': trip_info['adults'],
+            'teens': trip_info['teens'],
+            'children': trip_info['children'],
+            'infants': trip_info['infants'],
+            'curr': currency,
+            'limit': number_of_results,
+            'partner': 'picky'
+        }
+    except KeyError:
+        msg.fail("Something went wrong or user aborted the program")
+        sys.exit(1)
 
     # Construct api endpoint with flights
     url = api_endpoint + flights
 
     # Send request to web page
+    msg.info("Getting ready for take off.....")
     msg.info("Requesting to takeoff.....")
     response = requests.get(url, params=payload)
 
@@ -127,21 +135,18 @@ def jetburn_cli():
     parser.add_argument('-r', '--result', action='store', dest='results', required=False,
                         help='Number of results to show per search. Default is [5]'
                              ' Usage: jetburn -r 10')
-    parser.add_argument('--currency-info', action='store', dest='currency_info', required=False,
-                        help='Displays if the currency is valid or not for this program. (To be used with -c flag)'
-                             ' Usage: jetburn --currency-info <ISO_4217_currency_code>')
-    parser.add_argument('--airport-info', action='store', dest='airport_info', required=False,
-                        help='Displays information about airport.'
-                             ' Usage: jetburn --airport-info <iata_airport_code>')
-    parser.add_argument('--airline-info', action='store', dest='airline_info', required=False,
-                        help='Displays airline information.'
-                             ' Usage: jetburn --airline-info <iata_airline_code>')
+    parser.add_argument('--valid-currency', action='store', dest='valid_currency', required=False,
+                        help='Displays if the currency is valid or not for this program\'s currency conversion.'
+                             ' Usage: jetburn --valid-currency <ISO_4217_currency_code>')
+    # parser.add_argument('--airline-info', action='store', dest='airline_info', required=False,
+    #                     help='Displays airline information.'
+    #                          ' Usage: jetburn --airline-info <iata_airline_code>')
     parser.add_argument('--find-airport', action='store', dest='city_name', required=False,
                         help='Finds airport names and IATA code by city name.'
                              ' Usage: jetburn --find-airport <city_name>')
-    parser.add_argument('--find-currency', action='store', dest='country_name', required=False,
-                        help='Finds ISO 4217 currency names and codes by country name.'
-                             ' Usage: jetburn --find-currency <country_name>')
+    # parser.add_argument('--find-currency', action='store', dest='country_name', required=False,
+    #                     help='Finds ISO 4217 currency names and codes by country name.'
+    #                          ' Usage: jetburn --find-currency <country_name>')
     parser.add_argument('-v', '--version', action='version', version=operations.get_info(flag="arg_menu"),
                         help='Shows current version of jetburn, Usage: jetburn -v/--version')
 
@@ -167,13 +172,13 @@ def jetburn_cli():
         _results = int(args.results)
 
     # Check if the currency information argument
-    if args.currency_info is None:
+    if args.valid_currency is None:
         pass  # noqa
-    elif args.currency_info == 'all':
+    elif args.valid_currency is not None:
         operations.initial_message()
-        operations.get_currency_names()
+        operations.get_currency_names(currency=args.valid_currency)
     else:
-        err_msg = "Invalid input: {}".format(args.currency_info)
+        err_msg = "Invalid input: {}".format(args.valid_currency)
         msg.fail(err_msg)
         sys.exit(-1)
 
@@ -186,6 +191,6 @@ def jetburn_cli():
         operations.get_airport_names_by_city(search_city=pattern)
 
     # Passover the control to mission control if no info check arguments are provided
-    if args.currency_info is None and args.city_name is None:
+    if args.valid_currency is None and args.city_name is None:
         # Pass the control to mission control
         mission_control(exec_mode=exec_mode, currency_code=_currency_code, number_of_results=_results)

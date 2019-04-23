@@ -37,9 +37,8 @@ To get help, type
 
     » jetburn --help
     usage: jetburn [-h] [-m MODE] [-c CURRENCY_CODE] [-r RESULTS]
-                   [--currency-info CURRENCY_INFO] [--airport-info AIRPORT_INFO]
-                   [--airline-info AIRLINE_INFO] [--find-airport CITY_NAME]
-                   [--find-currency COUNTRY_NAME] [-v]
+                   [--valid-currency VALID_CURRENCY] [--find-airport CITY_NAME]
+                   [-v]
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -53,22 +52,13 @@ To get help, type
       -r RESULTS, --result RESULTS
                             Number of results to show per search. Default is [5]
                             Usage: jetburn -r 10
-      --currency-info CURRENCY_INFO
+      --valid-currency VALID_CURRENCY
                             Displays if the currency is valid or not for this
                             program. (To be used with -c flag) Usage: jetburn
-                            --currency-info <ISO_4217_currency_code>
-      --airport-info AIRPORT_INFO
-                            Displays information about airport. Usage: jetburn
-                            --airport-info <iata_airport_code>
-      --airline-info AIRLINE_INFO
-                            Displays airline information. Usage: jetburn
-                            --airline-info <iata_airline_code>
+                            --valid-currency <ISO_4217_currency_code>
       --find-airport CITY_NAME
                             Finds airport names and IATA code by city name. Usage:
                             jetburn --find-airport <city_name>
-      --find-currency COUNTRY_NAME
-                            Finds ISO 4217 currency names and codes by country
-                            name. Usage: jetburn --find-currency <country_name>
       -v, --version         Shows current version of jetburn, Usage: jetburn
                             -v/--version
 
@@ -236,12 +226,35 @@ The output of previous two commands will look something like this -
     +------------------+-----------------+---------+------------------+------------------+-------+
     | Thu 12 Dec 17:30 | HHN---PMO---BCN | 23h 35m | Fri 13 Dec 17:05 | 108 USD / 96 EUR | FR-VY |
     +------------------+-----------------+---------+------------------+------------------+-------+
-    +------------------+-----------------+---------+------------------+-------------------+-------+
-    | Thu 12 Dec 17:45 | FRA---BUD---BCN | 14h 55m | Fri 13 Dec 08:40 | 115 USD / 102 EUR | W6-W6 |
-    +------------------+-----------------+---------+------------------+-------------------+-------+
 
 How to get desired currency code? To see the valid currency list, type
 
 .. code-block:: shell
 
-   jetburn --currency-info all
+   jetburn --valid-currency AUD
+
+This will check if the currency is valid not not (for ``jetburn`` program currency conversion)
+
+.. code-block:: python
+
+   » jetburn --valid-currency NZD
+         ________     ___________
+         ______(_)______  /___  /_____  _______________
+         _____  /_  _ \  __/_  __ \  / / /_  ___/_  __ \
+         ____  / /  __/ /_ _  /_/ / /_/ /_  /   _  / / /
+         ___  /  \___/\__/ /_.___/\__,_/ /_/    /_/ /_/
+         /___/
+
+    +----------------------------------------------------------+
+    | Airline ticket explorer program [23-April-2019 21:56:49] |
+    | Author: Dalwar Hossain (dalwar.hossain@protonmail.com)   |
+    | Version: 2.1.0 / License: LGPL-3.0                       |
+    | Need help? jetburn -h/--help                             |
+    +----------------------------------------------------------+
+    |                   ..:: DISCLAIMER ::..                   |
+    | This program is not an airline ticket booking system and |
+    | has no affiliation with any airlines or ticketing agents |
+    +----------------------------------------------------------+
+    ℹ Evaluating currency input.....
+    ✔ [NZD] is a valid currency
+

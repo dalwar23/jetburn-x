@@ -223,15 +223,39 @@ def is_valid_currency(currency=None):
 
 
 # List the names of valid currencies according to their internation currency code
-def get_currency_names():
+def get_currency_names(currency=None):
     """
     This function generates human readable names for the valid currency codes
 
+    :param currency: (str) Currency code
     :return: (list) Currency name
     """
 
+    # Currency table
+    msg.info("Evaluating currency input.....")
+    if currency == 'all':
+        msg.good("Showing all valid currencies")
+        for i in range(0, len(valid_currencies), 8):
+            row = color("{}".format(valid_currencies[i:i+8]), fg="cyan")
+            print(row)
+    else:
+        if currency.upper() in valid_currencies:
+            msg.good("[{}] is a valid currency".format(currency))
+        else:
+            msg.fail("[{}] is not a valid currency".format(currency))
+            msg.fail("Only single currency input is supported. e.g. USD/AUD")
+            sys.exit(1)
+
+
+def get_currency_by_country_name(search_country=None):
+    """
+    This function shows ISO 4217 currency code by country name
+
+    :param search_country:
+    :return:
+    """
     # Create a package for currency data
-    msg.info("Collecting currency information.....")
+    msg.info("Collecting currency (details) information.....")
     package = Package("https://datahub.io/core/currency-codes/datapackage.json")
     for resource in package.resources:
         if resource.descriptor["datahub"]["type"] == "derived/json":
@@ -240,15 +264,19 @@ def get_currency_names():
             response = requests.get(url)
             if response.status_code == 200:
                 msg.good("ISO 4217 currency codes received")
-                currencies = response.json()
+                all_currencies = response.json()
             else:
                 msg.fail("Currency codes can not be obtained at this moment.")
-                sys.exit(-1)
-    # Currency table
+                sys.exit(1)
+    msg.info("Creating currency table.....")
+    formatted_table = _get_currency_table(target_currencies=_currencies, currencies=all_currencies)
+    print(formatted_table)
+
+
+def _get_currency_table(target_currencies=None, currencies=None):
     currency_table_header = ["Country", "Currency"]
     currency_table_rows = []
-    msg.info("Creating valid currency table.....")
-    for currency_code in valid_currencies:
+    for currency_code in target_currencies:
         for entry in currencies:
             if entry["AlphabeticCode"] == currency_code:
                 country = entry["Entity"]
@@ -259,7 +287,7 @@ def get_currency_names():
         currency_table_row = [country, currency_with_code]
         currency_table_rows.append(currency_table_row)
     formatted_table = color(tabulate(currency_table_rows, headers=currency_table_header, tablefmt="grid"), fg="cyan")
-    print(formatted_table)
+    return formatted_table
 
 
 # List all the valid airport codes and full airport names
@@ -285,7 +313,7 @@ def get_airport_names_by_city(search_city=None):
                 airports = response.json()
             else:
                 msg.fail("Airport IATA codes can not be obtained at this moment!")
-                sys.exit(-1)
+                sys.exit(1)
 
     # Find location
     found_airports = []
