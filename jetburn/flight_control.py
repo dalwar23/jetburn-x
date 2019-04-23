@@ -138,9 +138,9 @@ def jetburn_cli():
     parser.add_argument('--valid-currency', action='store', dest='valid_currency', required=False,
                         help='Displays if the currency is valid or not for this program\'s currency conversion.'
                              ' Usage: jetburn --valid-currency <ISO_4217_currency_code>')
-    # parser.add_argument('--airline-info', action='store', dest='airline_info', required=False,
-    #                     help='Displays airline information.'
-    #                          ' Usage: jetburn --airline-info <iata_airline_code>')
+    # parser.add_argument('--locate', action='store', dest='locate', required=False,
+    #                     help='Displays airport information (Location of the airport).'
+    #                          ' Usage: jetburn --locate <iata_airport_code>')
     parser.add_argument('--find-airport', action='store', dest='city_name', required=False,
                         help='Finds airport names and IATA code by city name.'
                              ' Usage: jetburn --find-airport <city_name>')
