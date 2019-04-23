@@ -175,7 +175,6 @@ def jetburn_cli():
     if args.valid_currency is None:
         pass  # noqa
     elif args.valid_currency is not None:
-        # operations.initial_message()
         operations.get_currency_names(currency=args.valid_currency)
     else:
         err_msg = "Invalid input: {}".format(args.valid_currency)
@@ -186,7 +185,6 @@ def jetburn_cli():
     if args.city_name is None:
         pass  # noqa
     else:
-        # operations.initial_message()
         pattern = args.city_name
         operations.get_airport_names_by_city(search_city=pattern)
 
