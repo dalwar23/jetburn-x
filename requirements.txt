@@ -2,7 +2,7 @@
 # Airline tickets explorer program
 # Author: Dalwar Hossain (dalwar.hossain@protonmail.com)
 
-pyfiglet ==0.7.6
+pyfiglet == 0.7.6
 requests == 2.20.0
 inquirer == 2.5.1
 tabulate == 0.8.2
