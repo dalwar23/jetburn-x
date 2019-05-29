@@ -23,8 +23,8 @@ if sys.argv[-1] == 'setup.py':
 
 
 # Check python version before installing
-if sys.version_info[:2] < (3, 5):
-    print("JETBURN requires Python 3.5 or later (%d.%d detected)." % sys.version_info[:2])
+if sys.version_info[:2] < (2, 7):
+    print("JETBURN requires Python 2.7 or later (%d.%d detected)." % sys.version_info[:2])
     sys.exit(-1)
 
 
