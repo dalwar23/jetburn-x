@@ -18,8 +18,8 @@ Airline ticket explorer program
     :target: https://jetburn.readthedocs.io/?badge=latest
     :alt: Documentation Status
 .. image:: https://img.shields.io/badge/code%20style-black-black.svg?style=for-the-badge
-   :target: https://github.com/ambv/black
-   :alt: Code Style
+    :target: https://github.com/python/black
+    :alt: Code Style
 
 Description
 -----------
