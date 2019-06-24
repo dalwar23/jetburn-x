@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """Setup script for jetburn
@@ -25,7 +25,7 @@ if sys.argv[-1] == "setup.py":
 # Check python version before installing
 if sys.version_info[:2] < (3, 5):
     print(
-        "JETBURN requires Python 2.7 or later. Python{}.{} detected.".format(
+        "JETBURN requires python3.5 or later. Python{}.{} detected.".format(
             sys.version_info[:2][0], sys.version_info[:2][1]
         )
     )
