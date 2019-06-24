@@ -22,32 +22,192 @@ from . import _version as release_info
 from . import _questions as questions
 
 # Source code meta data
-__author__ = 'Dalwar Hossain'
-__email__ = 'dalwar.hossain@protonmail.com'
+__author__ = "Dalwar Hossain"
+__email__ = "dalwar.hossain@protonmail.com"
 
 # Take care of character encoding for python2
 if sys.version_info.major == 2:
     reload(sys)
-    sys.setdefaultencoding('utf8')
+    sys.setdefaultencoding("utf8")
 else:
     pass  # noqa
 
 
 # List valid Currencies
-valid_currencies = ["AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM", "BBD", "BDT",
-                    "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL", "BSD", "BTC", "BTN", "BWP", "BYR", "BZD",
-                    "CAD", "CDF", "CHF", "CLF", "CLP", "CNY", "COP", "CRC", "CUC", "CUP", "CVE", "CZK", "DJF",
-                    "DKK", "DOP", "DZD", "EEK", "EGP", "ERN", "ETB", "EUR", "FJD", "FKP", "GBP", "GEL", "GGP",
-                    "GHS", "GIP", "GMD", "GNF", "GTQ", "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS",
-                    "IMP", "INR", "IQD", "IRR", "ISK", "JEP", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KMF",
-                    "KPW", "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LTL", "LVL", "LYD",
-                    "MAD", "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRO", "MTL", "MUR", "MVR", "MWK", "MXN",
-                    "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN", "PGK", "PHP",
-                    "PKR", "PLN", "PYG", "QAR", "QUN", "RON", "RSD", "RUB", "RWF", "SAR", "SBD", "SCR", "SDG",
-                    "SEK", "SGD", "SHP", "SLL", "SOS", "SRD", "STD", "SVC", "SYP", "SZL", "THB", "TJS", "TMT",
-                    "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", "USD", "UYU", "UZS", "VEF", "VND",
-                    "VUV", "WST", "XAF", "XAG", "XAU", "XCD", "XDR", "XOF", "XPD", "XPF", "XPT", "YER", "ZAR",
-                    "ZMK", "ZMW", "ZWL"]
+valid_currencies = [
+    "AED",
+    "AFN",
+    "ALL",
+    "AMD",
+    "ANG",
+    "AOA",
+    "ARS",
+    "AUD",
+    "AWG",
+    "AZN",
+    "BAM",
+    "BBD",
+    "BDT",
+    "BGN",
+    "BHD",
+    "BIF",
+    "BMD",
+    "BND",
+    "BOB",
+    "BRL",
+    "BSD",
+    "BTC",
+    "BTN",
+    "BWP",
+    "BYR",
+    "BZD",
+    "CAD",
+    "CDF",
+    "CHF",
+    "CLF",
+    "CLP",
+    "CNY",
+    "COP",
+    "CRC",
+    "CUC",
+    "CUP",
+    "CVE",
+    "CZK",
+    "DJF",
+    "DKK",
+    "DOP",
+    "DZD",
+    "EEK",
+    "EGP",
+    "ERN",
+    "ETB",
+    "EUR",
+    "FJD",
+    "FKP",
+    "GBP",
+    "GEL",
+    "GGP",
+    "GHS",
+    "GIP",
+    "GMD",
+    "GNF",
+    "GTQ",
+    "GYD",
+    "HKD",
+    "HNL",
+    "HRK",
+    "HTG",
+    "HUF",
+    "IDR",
+    "ILS",
+    "IMP",
+    "INR",
+    "IQD",
+    "IRR",
+    "ISK",
+    "JEP",
+    "JMD",
+    "JOD",
+    "JPY",
+    "KES",
+    "KGS",
+    "KHR",
+    "KMF",
+    "KPW",
+    "KRW",
+    "KWD",
+    "KYD",
+    "KZT",
+    "LAK",
+    "LBP",
+    "LKR",
+    "LRD",
+    "LSL",
+    "LTL",
+    "LVL",
+    "LYD",
+    "MAD",
+    "MDL",
+    "MGA",
+    "MKD",
+    "MMK",
+    "MNT",
+    "MOP",
+    "MRO",
+    "MTL",
+    "MUR",
+    "MVR",
+    "MWK",
+    "MXN",
+    "MYR",
+    "MZN",
+    "NAD",
+    "NGN",
+    "NIO",
+    "NOK",
+    "NPR",
+    "NZD",
+    "OMR",
+    "PAB",
+    "PEN",
+    "PGK",
+    "PHP",
+    "PKR",
+    "PLN",
+    "PYG",
+    "QAR",
+    "QUN",
+    "RON",
+    "RSD",
+    "RUB",
+    "RWF",
+    "SAR",
+    "SBD",
+    "SCR",
+    "SDG",
+    "SEK",
+    "SGD",
+    "SHP",
+    "SLL",
+    "SOS",
+    "SRD",
+    "STD",
+    "SVC",
+    "SYP",
+    "SZL",
+    "THB",
+    "TJS",
+    "TMT",
+    "TND",
+    "TOP",
+    "TRY",
+    "TTD",
+    "TWD",
+    "TZS",
+    "UAH",
+    "UGX",
+    "USD",
+    "UYU",
+    "UZS",
+    "VEF",
+    "VND",
+    "VUV",
+    "WST",
+    "XAF",
+    "XAG",
+    "XAU",
+    "XCD",
+    "XDR",
+    "XOF",
+    "XPD",
+    "XPF",
+    "XPT",
+    "YER",
+    "ZAR",
+    "ZMK",
+    "ZMW",
+    "ZWL",
+]
 
 # Create msg from wasabi printer class
 msg = wasabi.Printer()
@@ -65,14 +225,16 @@ def initial_message():
     vertical_marker = "|"
 
     # Print a general help message
-    text_to_render = " "*2 + "jetburn"
+    text_to_render = " " * 2 + "jetburn"
     fig_let = Figlet(font="speed")
 
     date_time = datetime.datetime.now()
     _print_string = "Airline ticket explorer program"
     _print_string += " [" + date_time.strftime("%d-%B-%Y %H:%M:%S") + "]"
     # Author message display
-    _author_string = "Author: {} ({})".format(release_info.__author__, release_info.__author_email__)
+    _author_string = "Author: {} ({})".format(
+        release_info.__author__, release_info.__author_email__
+    )
     # Help message
     _help_string = "Need help? jetburn -h/--help"
     # Warning message
@@ -85,35 +247,66 @@ def initial_message():
     print_string = prefix + _print_string
     version_release = release_info.__full_version__
     license_ = release_info.__app_license__
-    version_message = prefix + "Version: " + version_release + " / " + "License: " + license_
+    version_message = (
+        prefix + "Version: " + version_release + " / " + "License: " + license_
+    )
     author_string = prefix + _author_string
     help_string = prefix + _help_string
     warn_line1 = prefix + _warn_line1
     warn_line2 = prefix + _warn_line2
     # Take max
-    str_length = max([len(print_string), len(version_message), len(author_string), len(help_string),
-                      len(warn_line1), len(warn_line2)]) + 2
+    str_length = (
+        max(
+            [
+                len(print_string),
+                len(version_message),
+                len(author_string),
+                len(help_string),
+                len(warn_line1),
+                len(warn_line2),
+            ]
+        )
+        + 2
+    )
     blank_space = str_length - (len(prefix) + len(suffix))
     warn_space = blank_space - len(_warn_line0)
     if warn_space % 2 == 0:
-        warn_space_before = int(warn_space/2)
-        warn_space_after = int(warn_space/2)
+        warn_space_before = int(warn_space / 2)
+        warn_space_after = int(warn_space / 2)
     else:
-        warn_space_before = int(warn_space/2)
-        warn_space_after = int(warn_space/2 + 1)
+        warn_space_before = int(warn_space / 2)
+        warn_space_after = int(warn_space / 2 + 1)
     # Create padding
-    print_string = print_string + " " * (str_length - len(print_string) - len(suffix)) + suffix
-    version_message = version_message + " " * (str_length - len(version_message) - len(suffix)) + suffix
-    author_string = author_string + " " * (str_length - len(author_string) - len(suffix)) + suffix
-    help_string = help_string + " " * (str_length - len(help_string) - len(suffix)) + suffix
+    print_string = (
+        print_string + " " * (str_length - len(print_string) - len(suffix)) + suffix
+    )
+    version_message = (
+        version_message
+        + " " * (str_length - len(version_message) - len(suffix))
+        + suffix
+    )
+    author_string = (
+        author_string + " " * (str_length - len(author_string) - len(suffix)) + suffix
+    )
+    help_string = (
+        help_string + " " * (str_length - len(help_string) - len(suffix)) + suffix
+    )
     warn_line1_padding = " " * (str_length - len(warn_line1) - len(suffix))
     warn_line2_padding = " " * (str_length - len(warn_line2) - len(suffix))
 
     # Print information
-    line_block = "+" + horizontal_marker * (str_length-2) + "+"
+    line_block = "+" + horizontal_marker * (str_length - 2) + "+"
     header = color(fig_let.renderText(text_to_render), fg="green")
     print(header)
-    print(line_block, print_string, author_string, version_message, help_string, line_block, sep="\n")
+    print(
+        line_block,
+        print_string,
+        author_string,
+        version_message,
+        help_string,
+        line_block,
+        sep="\n",
+    )
     # Disclaimer
     print(prefix, end="")
     print(" " * warn_space_before, end="")
@@ -195,7 +388,7 @@ def trip_status():
             "type": "confirm",
             "message": "Round Trip?",
             "name": "trip_status",
-            "default": True
+            "default": True,
         }
     ]
     answer = PyInquirer.prompt(question)
@@ -233,10 +426,10 @@ def get_currency_names(currency=None):
 
     # Currency table
     msg.info("Evaluating currency input.....")
-    if currency == 'all':
+    if currency == "all":
         msg.good("Showing all valid currencies")
         for i in range(0, len(valid_currencies), 8):
-            row = color("{}".format(valid_currencies[i:i+8]), fg="cyan")
+            row = color("{}".format(valid_currencies[i : i + 8]), fg="cyan")
             print(row)
     else:
         if currency.upper() in valid_currencies:
@@ -269,7 +462,9 @@ def get_currency_by_country_name(search_country=None):
                 msg.fail("Currency codes can not be obtained at this moment.")
                 sys.exit(1)
     msg.info("Creating currency table.....")
-    formatted_table = _get_currency_table(target_currencies=_currencies, currencies=all_currencies)
+    formatted_table = _get_currency_table(
+        target_currencies=_currencies, currencies=all_currencies
+    )
     print(formatted_table)
 
 
@@ -286,7 +481,10 @@ def _get_currency_table(target_currencies=None, currencies=None):
                 pass  # noqa
         currency_table_row = [country, currency_with_code]
         currency_table_rows.append(currency_table_row)
-    formatted_table = color(tabulate(currency_table_rows, headers=currency_table_header, tablefmt="grid"), fg="cyan")
+    formatted_table = color(
+        tabulate(currency_table_rows, headers=currency_table_header, tablefmt="grid"),
+        fg="cyan",
+    )
     return formatted_table
 
 
@@ -335,10 +533,21 @@ def get_airport_names_by_city(search_city=None):
     airport_table_headers = ["Airport Name", "City", "IATA Code"]
     airport_table_rows = []
     for airport in found_airports:
-        if airport["iata_code"] == "null" or airport["iata_code"] == "None" or airport["iata_code"] is None:
+        if (
+            airport["iata_code"] == "null"
+            or airport["iata_code"] == "None"
+            or airport["iata_code"] is None
+        ):
             pass  # noqa
         else:
-            airport_table_row = [airport["name"], airport["municipality"], airport["iata_code"]]
+            airport_table_row = [
+                airport["name"],
+                airport["municipality"],
+                airport["iata_code"],
+            ]
             airport_table_rows.append(airport_table_row)
-    formatted_table = color(tabulate(airport_table_rows, headers=airport_table_headers, tablefmt="grid"), fg="cyan")
+    formatted_table = color(
+        tabulate(airport_table_rows, headers=airport_table_headers, tablefmt="grid"),
+        fg="cyan",
+    )
     print(formatted_table)

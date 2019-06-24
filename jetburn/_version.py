@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Source code meta data
-__package_name__ = 'jetburn'
-__author__ = 'Dalwar Hossain'
+__package_name__ = "jetburn"
+__author__ = "Dalwar Hossain"
 __author_email__ = "dalwar.hossain@protonmail.com"
 __major_version__ = "2"
 __release__ = "1"

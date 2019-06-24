@@ -7,8 +7,14 @@ information.
 """
 
 # Source code meta data
-__author__ = 'Dalwar Hossain'
-__email__ = 'dalwar.hossain@protonmail.com'
+__author__ = "Dalwar Hossain"
+__email__ = "dalwar.hossain@protonmail.com"
 
 # Handle Imports
-from ._version import __author__, __author_email__, __full_version__, __short_version__, __app_license__
+from ._version import (
+    __author__,
+    __author_email__,
+    __full_version__,
+    __short_version__,
+    __app_license__,
+)

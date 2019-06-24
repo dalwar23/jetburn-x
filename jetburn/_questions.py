@@ -8,13 +8,15 @@ import re
 from PyInquirer import Validator, ValidationError
 
 # Source code meta data
-__author__ = 'Dalwar Hossain'
-__email__ = 'dalwar.hossain@protonmail.com'
+__author__ = "Dalwar Hossain"
+__email__ = "dalwar.hossain@protonmail.com"
 
 # Date generation regular expression
-date_reg_ex = "(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/]" \
-              "(0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|" \
-              "32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)"
+date_reg_ex = (
+    "(^(((0[1-9]|1[0-9]|2[0-8])[\/](0[1-9]|1[012]))|((29|30|31)[\/](0[13578]|1[02]))|((29|30)[\/]"
+    "(0[4,6,9]|11)))[\/](19|[2-9][0-9])\d\d$)|(^29[\/]02[\/](19|[2-9][0-9])(00|04|08|12|16|20|24|28|"
+    "32|36|40|44|48|52|56|60|64|68|72|76|80|84|88|92|96)$)"
+)
 
 
 # Airport IATA code validator
@@ -23,12 +25,12 @@ class IataCodeValidator(Validator):
         pass
 
     def validate(self, document):
-        ok = re.match('^[a-zA-Z]{3}$', document.text)
+        ok = re.match("^[a-zA-Z]{3}$", document.text)
         if not ok:
             raise ValidationError(
-                message='Please use 3 letter IATA airport codes. To find out IATA codes '
-                        'use: jetburn --find-airport <city_name>',
-                cursor_position=len(document.text)
+                message="Please use 3 letter IATA airport codes. To find out IATA codes "
+                "use: jetburn --find-airport <city_name>",
+                cursor_position=len(document.text),
             )
 
 
@@ -41,8 +43,8 @@ class DateValidator(Validator):
         ok = re.match(date_reg_ex, document.text)
         if not ok:
             raise ValidationError(
-                message='Please enter date in correct format',
-                cursor_position=len(document.text)  # Moves cursor to the end
+                message="Please enter date in correct format",
+                cursor_position=len(document.text),  # Moves cursor to the end
             )
 
 
@@ -55,69 +57,68 @@ class NumberValidator(Validator):
             int(document.text)
         except ValueError:
             raise ValidationError(
-                message='Please enter a number',
-                cursor_position=len(document.text)
+                message="Please enter a number", cursor_position=len(document.text)
             )
 
 
 # Generate questions for flight search information
 one_way_questions = [
     {
-        'type': 'input',
-        'name': 'origin',
-        'message': 'Origin airport:',
-        'validate': IataCodeValidator
+        "type": "input",
+        "name": "origin",
+        "message": "Origin airport:",
+        "validate": IataCodeValidator,
     },
     {
-        'type': 'input',
-        'name': 'destination',
-        'message': 'Destination airport:',
-        'validate': IataCodeValidator
+        "type": "input",
+        "name": "destination",
+        "message": "Destination airport:",
+        "validate": IataCodeValidator,
     },
     {
-        'type': 'input',
-        'name': 'fly_out_date',
-        'message': 'Fly out date (dd/mm/yyyy):',
-        'validate': DateValidator
+        "type": "input",
+        "name": "fly_out_date",
+        "message": "Fly out date (dd/mm/yyyy):",
+        "validate": DateValidator,
     },
     {
-        'type': 'input',
-        'name': 'adults',
-        'message': 'Adults (>16 Years)?',
-        'validate': NumberValidator,
-        'filter': lambda val: int(val),
-        'default': '1'
+        "type": "input",
+        "name": "adults",
+        "message": "Adults (>16 Years)?",
+        "validate": NumberValidator,
+        "filter": lambda val: int(val),
+        "default": "1",
     },
     {
-        'type': 'input',
-        'name': 'teens',
-        'message': 'Teens (12-15 Years)?',
-        'validate': NumberValidator,
-        'filter': lambda val: int(val),
-        'default': '0'
+        "type": "input",
+        "name": "teens",
+        "message": "Teens (12-15 Years)?",
+        "validate": NumberValidator,
+        "filter": lambda val: int(val),
+        "default": "0",
     },
     {
-        'type': 'input',
-        'name': 'children',
-        'message': 'Children (2-11 Years)?',
-        'validate': NumberValidator,
-        'filter': lambda val: int(val),
-        'default': '0'
+        "type": "input",
+        "name": "children",
+        "message": "Children (2-11 Years)?",
+        "validate": NumberValidator,
+        "filter": lambda val: int(val),
+        "default": "0",
     },
     {
-        'type': 'input',
-        'name': 'infants',
-        'message': 'Infants (<2 Years)?',
-        'validate': NumberValidator,
-        'filter': lambda val: int(val),
-        'default': '0'
-    }
+        "type": "input",
+        "name": "infants",
+        "message": "Infants (<2 Years)?",
+        "validate": NumberValidator,
+        "filter": lambda val: int(val),
+        "default": "0",
+    },
 ]
 fly_back_question = {
-    'type': 'input',
-    'name': 'fly_back_date',
-    'message': 'Fly back date (dd/mm/yyyy):',
-    'validate': DateValidator
+    "type": "input",
+    "name": "fly_back_date",
+    "message": "Fly back date (dd/mm/yyyy):",
+    "validate": DateValidator,
 }
 
 

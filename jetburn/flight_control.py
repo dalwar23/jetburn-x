@@ -17,8 +17,8 @@ from . import _operations as operations
 from . import _flight_parser as flight_parser
 
 # Source code meta data
-__author__ = 'Dalwar Hossain'
-__email__ = 'dalwar.hossain@protonmail.com'
+__author__ = "Dalwar Hossain"
+__email__ = "dalwar.hossain@protonmail.com"
 
 # Create msg from wasabi printer class
 msg = wasabi.Printer()
@@ -56,7 +56,7 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
     if valid_currency:
         currency = currency_code
     else:
-        currency = 'EUR'
+        currency = "EUR"
 
     # Get the trip status - one way or round trip
     try:
@@ -73,19 +73,19 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
     flights = "/flights"
     try:
         payload = {
-            'flyFrom': trip_info['origin'].upper(),
-            'to': trip_info['destination'].upper(),
-            'dateFrom': trip_info['fly_out_date'],
-            'dateTo': trip_info['fly_out_date'],
-            'returnFrom': trip_info['fly_back_date'],
-            'returnTo': trip_info['fly_back_date'],
-            'adults': trip_info['adults'],
-            'teens': trip_info['teens'],
-            'children': trip_info['children'],
-            'infants': trip_info['infants'],
-            'curr': currency,
-            'limit': number_of_results,
-            'partner': 'picky'
+            "flyFrom": trip_info["origin"].upper(),
+            "to": trip_info["destination"].upper(),
+            "dateFrom": trip_info["fly_out_date"],
+            "dateTo": trip_info["fly_out_date"],
+            "returnFrom": trip_info["fly_back_date"],
+            "returnTo": trip_info["fly_back_date"],
+            "adults": trip_info["adults"],
+            "teens": trip_info["teens"],
+            "children": trip_info["children"],
+            "infants": trip_info["infants"],
+            "curr": currency,
+            "limit": number_of_results,
+            "partner": "picky",
         }
     except KeyError:
         msg.fail("Something went wrong or user aborted the program")
@@ -113,8 +113,10 @@ def mission_control(exec_mode=None, currency_code=None, number_of_results=None):
         sys.exit(-1)
 
     # Parse the response
-    for data in json_data['data']:
-        flight_parser.itinerary_parser(flight_search_data=data, execution_mode=exec_mode)
+    for data in json_data["data"]:
+        flight_parser.itinerary_parser(
+            flight_search_data=data, execution_mode=exec_mode
+        )
 
 
 # CLI entry point of jetburn
@@ -126,42 +128,75 @@ def jetburn_cli():
 
     # Create parser
     parser = argparse.ArgumentParser(add_help=True)
-    parser.add_argument('-m', '--mode', action='store', dest='mode', required=False,
-                        help='Execution mode of the program. Compact[c/compact](default), Advanced[a/advanced] and '
-                             'Expert [e/expert]. Usage: jetburn -m e OR jetburn -m expert')
-    parser.add_argument('-c', '--currency', action='store', dest='currency_code', required=False,
-                        help='Three letter currency code.[EUR], USD, AUD, CAD, RON, PLN etc.'
-                             ' Usage: jetburn -c USD')
-    parser.add_argument('-r', '--result', action='store', dest='results', required=False,
-                        help='Number of results to show per search. Default is [5]'
-                             ' Usage: jetburn -r 10')
-    parser.add_argument('--valid-currency', action='store', dest='valid_currency', required=False,
-                        help='Displays if the currency is valid or not for this program\'s currency conversion.'
-                             ' Usage: jetburn --valid-currency <ISO_4217_currency_code>')
+    parser.add_argument(
+        "-m",
+        "--mode",
+        action="store",
+        dest="mode",
+        required=False,
+        help="Execution mode of the program. Compact[c/compact](default), Advanced[a/advanced] and "
+        "Expert [e/expert]. Usage: jetburn -m e OR jetburn -m expert",
+    )
+    parser.add_argument(
+        "-c",
+        "--currency",
+        action="store",
+        dest="currency_code",
+        required=False,
+        help="Three letter currency code.[EUR], USD, AUD, CAD, RON, PLN etc."
+        " Usage: jetburn -c USD",
+    )
+    parser.add_argument(
+        "-r",
+        "--result",
+        action="store",
+        dest="results",
+        required=False,
+        help="Number of results to show per search. Default is [5]"
+        " Usage: jetburn -r 10",
+    )
+    parser.add_argument(
+        "--valid-currency",
+        action="store",
+        dest="valid_currency",
+        required=False,
+        help="Displays if the currency is valid or not for this program's currency conversion."
+        " Usage: jetburn --valid-currency <ISO_4217_currency_code>",
+    )
     # parser.add_argument('--locate', action='store', dest='locate', required=False,
     #                     help='Displays airport information (Location of the airport).'
     #                          ' Usage: jetburn --locate <iata_airport_code>')
-    parser.add_argument('--find-airport', action='store', dest='city_name', required=False,
-                        help='Finds airport names and IATA code by city name.'
-                             ' Usage: jetburn --find-airport <city_name>')
+    parser.add_argument(
+        "--find-airport",
+        action="store",
+        dest="city_name",
+        required=False,
+        help="Finds airport names and IATA code by city name."
+        " Usage: jetburn --find-airport <city_name>",
+    )
     # parser.add_argument('--find-currency', action='store', dest='country_name', required=False,
     #                     help='Finds ISO 4217 currency names and codes by country name.'
     #                          ' Usage: jetburn --find-currency <country_name>')
-    parser.add_argument('-v', '--version', action='version', version=operations.get_info(flag="arg_menu"),
-                        help='Shows current version of jetburn, Usage: jetburn -v/--version')
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        version=operations.get_info(flag="arg_menu"),
+        help="Shows current version of jetburn, Usage: jetburn -v/--version",
+    )
 
     # Parse arguments
     args = parser.parse_args()
 
     # Double check passed arguments
     if args.mode is None:
-        exec_mode = 'compact'
+        exec_mode = "compact"
     else:
         exec_mode = args.mode.lower()
 
     # Check currency code
     if args.currency_code is None:
-        _currency_code = 'EUR'
+        _currency_code = "EUR"
     else:
         _currency_code = args.currency_code.upper()
 
@@ -191,4 +226,8 @@ def jetburn_cli():
     # Passover the control to mission control if no info check arguments are provided
     if args.valid_currency is None and args.city_name is None:
         # Pass the control to mission control
-        mission_control(exec_mode=exec_mode, currency_code=_currency_code, number_of_results=_results)
+        mission_control(
+            exec_mode=exec_mode,
+            currency_code=_currency_code,
+            number_of_results=_results,
+        )
