@@ -1,0 +1,11 @@
+# Development Requirements for jetburn
+# Airline tickets explorer program
+# Author: Dalwar Hossain (dalwar.hossain@protonmail.com)
+
+bumpversion==0.5.3
+
+
+# Documentation requirements
+sphinx==1.8.5
+recommonmark==0.5.0
+sphinx_rtd_theme==0.4.3
