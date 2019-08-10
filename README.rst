@@ -10,9 +10,9 @@ Airline ticket explorer program
     :alt: Pypi Version
     :target: https://pypi.org/project/jetburn/
 
-.. image:: https://img.shields.io/travis/dharif23/jetburn/master.svg?style=for-the-badge
+.. image:: https://img.shields.io/travis/dalwar23/jetburn/master.svg?style=for-the-badge
     :alt: Build Status
-    :target: https://travis-ci.org/dharif23/jetburn
+    :target: https://travis-ci.org/dalwar23/jetburn
 
 .. image:: https://img.shields.io/readthedocs/jetburn.svg?style=for-the-badge
     :target: https://jetburn.readthedocs.io/?badge=latest
